@@ -24,9 +24,18 @@ class ligne :
                                     self.y0*SCALE,                                  #y1
                                     (self.x0 + np.cos(self.theta)*self.d)*SCALE,    #x2
                                     (self.y0 - np.sin(self.theta)*self.d)*SCALE])   #y2
+        self.texte = None
     
     def delete(self) :
         zone.delete(self.ID)
+        
+    def label(self, texte, xoff=0, yoff=0) :
+        if self.texte :
+            zone.delete(self.texte)
+        self.texte = zone.create_text([SCALE*(self.x0+xoff+self.d*np.cos(self.theta)/2),
+                                       SCALE*(self.y0+yoff-self.d*np.sin(self.theta)/2)],
+                                      text = texte,
+                                      anchor=tk.SW)
     
     def cartesien(self) :
         a = np.tan(self.theta)
@@ -59,8 +68,18 @@ class angle :
                                   start=np.rad2deg(self.theta0),
                                   extent=np.rad2deg(self.dtheta),
                                   style=tk.ARC)
+        self.texte = None
+        
     def delete(self) :
         zone.delete(self.ID)
+    
+    def label(self,texte,xoff=0,yoff=0) :
+        if self.texte :
+            zone.delete(self.texte)
+        self.texte = zone.create_text([SCALE*(self.x0+xoff+self.radius*np.cos(self.theta0+self.dtheta/2)),
+                                       SCALE*(self.y0+yoff-self.radius*np.sin(self.theta0+self.dtheta/2))],
+                                      text=texte,
+                                      anchor=tk.SW)
 
 class ellipse :
     def __init__(self,xf,yf,a,e,theta,morceaux=20) :
