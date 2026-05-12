@@ -13,6 +13,8 @@ import geometrie as gm
 #trace une ligne entre le deuxième foyer et le point à 2,7 radians
 #affiche l'origine avec une étiquette
 
+gm.configure(128,128,5)
+
 el = gm.ellipse(40, 0, 50, 0.7,0.3)
 l0 = el.ligne(0)
 l1 = el.ligne(2.7)

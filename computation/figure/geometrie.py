@@ -8,16 +8,26 @@ Created on Mon May 11 19:13:10 2026
 import tkinter as tk
 import numpy as np
 
-SCALE = 2
+SCALE = 1
 WIDTH = 128
 HEIGHT = 128
 WIDTH = SCALE*WIDTH
 HEIGHT = SCALE*HEIGHT
 
 #creation de la fenetre
-fenetre = tk.Tk()
-zone = tk.Canvas(fenetre, width=WIDTH, height=HEIGHT)
-fenetre.resizable(height=False,width=False)
+fenetre = None
+zone = None
+
+def configure(width = 128, height = 128, scale=1) :
+    global zone, fenetre, WIDTH, HEIGHT, SCALE
+    SCALE = scale
+    WIDTH = width
+    HEIGHT = height
+    WIDTH = SCALE*WIDTH
+    HEIGHT = SCALE*HEIGHT
+    fenetre = tk.Tk()
+    zone = tk.Canvas(fenetre, width=WIDTH, height=HEIGHT)
+    fenetre.resizable(height=False,width=False)
 
 class point :
     def __init__(self,x,y,radius=3,scalable=False) :
@@ -170,8 +180,7 @@ class ellipse :
     def foyer2(self) :
         return point(self.xf-2*self.e*self.a*np.cos(self.theta),self.yf-2*self.e*self.a*np.sin(self.theta))
         
-def affichage() :
+def affichage() :    
+    zone.pack()
+    fenetre.title("test")
     fenetre.mainloop()
-    
-zone.pack()
-fenetre.title("test")
