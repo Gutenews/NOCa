@@ -91,6 +91,9 @@ class ligne :
         self.texte = None
     
     def delete(self) :
+        for e in self.children :
+            e.delete()
+            self.children.remove(e)
         zone.delete(self.ID)
         
     def label(self, texte, xoff=0, yoff=0) :
@@ -100,6 +103,19 @@ class ligne :
                                        HEIGHT/2-SCALE*(self.y0+yoff+self.d*np.sin(self.theta)/2)],
                                       text = texte,
                                       anchor=tk.SW)
+    
+    def style(self, style) :
+        for e in self.children :
+            e.delete()
+            self.children.remove(e)
+        if style=='V' :
+            p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta)
+            self.children.append(p1)
+        elif style=='D' :
+            p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta)
+            p2 = fleche(self.x0, self.y0, -self.theta)
+            self.children.append(p1)
+            self.children.append(p2)
     
     def cartesien(self) :
         a = np.tan(self.theta)
@@ -120,6 +136,7 @@ class ligne :
 
 class angle :
     def __init__(self,x0,y0,radius,theta0,dtheta) :
+        self.children = []
         self.x0 = x0
         self.y0 = y0
         self.radius = radius
@@ -135,6 +152,9 @@ class angle :
         self.texte = None
         
     def delete(self) :
+        for e in self.children :
+            e.delete()
+            self.children.remove(e)
         zone.delete(self.ID)
     
     def label(self,texte,xoff=0,yoff=0) :
@@ -144,6 +164,50 @@ class angle :
                                        HEIGHT/2-SCALE*(self.y0+yoff+self.radius*np.sin(self.theta0+self.dtheta/2))],
                                       text=texte,
                                       anchor=tk.SW)
+
+    def style(self, style) :
+        for e in self.children :
+            e.delete()
+            self.children.remove(e)
+        if style == 'V' :
+            p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), self.y0+self.radius*np.sin(self.theta0+self.dtheta), self.theta0+self.dtheta+np.pi/2)
+            self.children.append(p1)
+        elif style == 'D' :
+            p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), self.y0+self.radius*np.sin(self.theta0+self.dtheta), self.theta0+self.dtheta+np.pi/2)
+            p2 = fleche(self.x0+self.radius*np.cos(self.theta0), self.y0+self.radius*np.sin(self.theta0), self.theta0-np.pi/2)
+            self.children.append(p1)
+            self.children.append(p2)
+
+class fleche :
+    def __init__(self, x0, y0, theta, dtheta=np.pi/3, radius=7, scalable=False) :
+        self.x0 = x0
+        self.y0 = y0
+        self.theta = theta
+        self.dtheta = dtheta
+        self.scalable = scalable
+        self.radius = radius
+        if self.scalable :
+            self.ID1 = zone.create_line([WIDTH/2+SCALE*self.x0,
+                                         HEIGHT/2-SCALE*self.y0,
+                                         WIDTH/2+SCALE*(self.x0-self.radius*np.cos(self.theta-self.dtheta/2)),
+                                         HEIGHT/2-SCALE*(self.y0-self.radius*np.sin(self.theta-self.dtheta/2))])
+            self.ID2 = zone.create_line([WIDTH/2+SCALE*self.x0,
+                                         HEIGHT/2-SCALE*self.y0,
+                                         WIDTH/2+SCALE*(self.x0-self.radius*np.cos(self.theta+self.dtheta/2)),
+                                         HEIGHT/2-SCALE*(self.y0-self.radius*np.sin(self.theta+self.dtheta/2))])
+        else :
+            self.ID1 = zone.create_line([WIDTH/2+SCALE*self.x0,
+                                         HEIGHT/2-SCALE*self.y0,
+                                         WIDTH/2+SCALE*self.x0-self.radius*np.cos(self.theta-self.dtheta/2),
+                                         HEIGHT/2-SCALE*self.y0+self.radius*np.sin(self.theta-self.dtheta/2)])
+            self.ID2 = zone.create_line([WIDTH/2+SCALE*self.x0,
+                                         HEIGHT/2-SCALE*self.y0,
+                                         WIDTH/2+SCALE*self.x0-self.radius*np.cos(self.theta+self.dtheta/2),
+                                         HEIGHT/2-SCALE*self.y0+self.radius*np.sin(self.theta+self.dtheta/2)])
+    def delete(self) :
+        zone.delete(self.ID1)
+        zone.delete(self.ID2)
+            
 
 class ellipse :
     def __init__(self,xf,yf,a,e,theta,morceaux=20) :
