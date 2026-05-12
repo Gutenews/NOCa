@@ -61,6 +61,11 @@ class point :
                                        HEIGHT/2-SCALE*self.y],
                                       text = texte,
                                       anchor = tk.SW)
+    
+    def ligne(self, point) :
+        d = np.sqrt((self.x-point.x)**2+(self.y-point.y)**2)
+        theta = np.atan2(point.y-self.y,point.x-self.x)
+        return ligne(self.x,self.y,theta,d)
 
 class ligne :
     def __init__(self,x0,y0,theta,d) :
@@ -152,6 +157,12 @@ class ellipse :
     def ligne(self, theta) :
         sortie = ligne(self.xf,self.yf,theta+self.theta,self.a*(1-self.e**2)/(1+self.e*np.cos(theta)))
         return sortie
+    
+    def point(self,theta) :
+        r = self.a*(1-self.e**2)/(1+self.e*np.cos(theta))
+        x = self.xf + r*np.cos(self.theta+theta)
+        y = self.yf + r*np.sin(self.theta+theta)
+        return point(x,y)
     
     def foyer1(self) :
         return point(self.xf, self.yf)

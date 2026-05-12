@@ -10,6 +10,7 @@ import geometrie as gm
 #segment nommé r reliant le foyer droit avec un point 2,7 radians dans le sens direct par rapport au premier segment et un arc de cercle nommé theta
 #entre ces deux 
 #affiche le deuxième foyer de l'ellipse
+#trace une ligne entre le deuxième foyer et le point à 2,7 radians
 #affiche l'origine avec une étiquette
 
 el = gm.ellipse(40, 0, 50, 0.7,0.3)
@@ -17,6 +18,9 @@ l0 = el.ligne(0)
 l1 = el.ligne(2.7)
 l0.angle(l1).label("theta")
 l1.label("r")
-el.foyer2()
+p1 = el.point(2.7)
+f2 = el.foyer2()
+f2.ligne(p1)
+p1.delete()
 (gm.point(0,0)).label("O")
 gm.affichage()
