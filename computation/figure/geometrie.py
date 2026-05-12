@@ -7,6 +7,7 @@ Created on Mon May 11 19:13:10 2026
 
 import tkinter as tk
 import numpy as np
+from PIL import Image
 
 SCALE = 1
 WIDTH = 128
@@ -70,7 +71,8 @@ class point :
         self.texte = zone.create_text([WIDTH/2+SCALE*self.x,
                                        HEIGHT/2-SCALE*self.y],
                                       text = texte,
-                                      anchor = tk.SW)
+                                      anchor = tk.SW,
+                                      font="Courier")
     
     def ligne(self, point) :
         d = np.sqrt((self.x-point.x)**2+(self.y-point.y)**2)
@@ -102,7 +104,8 @@ class ligne :
         self.texte = zone.create_text([WIDTH/2+SCALE*(self.x0+xoff+self.d*np.cos(self.theta)/2),
                                        HEIGHT/2-SCALE*(self.y0+yoff+self.d*np.sin(self.theta)/2)],
                                       text = texte,
-                                      anchor=tk.SW)
+                                      anchor=tk.SW,
+                                      font="Courier")
     
     def style(self, style) :
         for e in self.children :
@@ -163,7 +166,8 @@ class angle :
         self.texte = zone.create_text([WIDTH/2+SCALE*(self.x0+xoff+self.radius*np.cos(self.theta0+self.dtheta/2)),
                                        HEIGHT/2-SCALE*(self.y0+yoff+self.radius*np.sin(self.theta0+self.dtheta/2))],
                                       text=texte,
-                                      anchor=tk.SW)
+                                      anchor=tk.SW,
+                                      font="Courier")
 
     def style(self, style) :
         for e in self.children :
@@ -248,3 +252,11 @@ def affichage() :
     zone.pack()
     fenetre.title("test")
     fenetre.mainloop()
+
+def export(chemin) :
+    zone.pack()
+    zone.update()
+    zone.postscript(file=chemin+".ps",pageheight=HEIGHT,pagewidth=WIDTH,colormode='color')
+    capture = Image.open(chemin+".ps")
+    capture.save(chemin+".png")
+    fenetre.mainloop()    

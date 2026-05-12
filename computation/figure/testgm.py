@@ -27,4 +27,6 @@ f2 = el.foyer2()
 f2.ligne(p1).style('D')
 p1.delete()
 (gm.point(0,0)).label("O")
-gm.affichage()
+
+#gm.affichage()
+gm.export("./out/testgm")
