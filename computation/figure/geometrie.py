@@ -19,6 +19,49 @@ fenetre = tk.Tk()
 zone = tk.Canvas(fenetre, width=WIDTH, height=HEIGHT)
 fenetre.resizable(height=False,width=False)
 
+class point :
+    def __init__(self,x,y,radius=3,scalable=False) :
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.scalable = scalable
+        if self.scalable :
+            self.ID1 = zone.create_line([WIDTH/2+SCALE*(self.x+self.radius),
+                                         HEIGHT/2-SCALE*(self.y+self.radius),
+                                         WIDTH/2+SCALE*(self.x-self.radius-1),
+                                         HEIGHT/2-SCALE*(self.y-self.radius-1)],
+                                        width = 1)
+            
+            self.ID2 = zone.create_line([WIDTH/2+SCALE*(self.x-self.radius),
+                                         HEIGHT/2-SCALE*(self.y+self.radius),
+                                         WIDTH/2+SCALE*(self.x+self.radius+1),
+                                         HEIGHT/2-SCALE*(self.y-self.radius-1)])
+        else :
+            self.ID1 = zone.create_line([WIDTH/2+SCALE*self.x+self.radius,
+                                         HEIGHT/2-SCALE*self.y-self.radius,
+                                         WIDTH/2+SCALE*self.x-self.radius-1,
+                                         HEIGHT/2-SCALE*self.y+self.radius+1],
+                                        width = 1)
+            
+            self.ID2 = zone.create_line([WIDTH/2+SCALE*self.x-self.radius,
+                                         HEIGHT/2-SCALE*self.y-self.radius,
+                                         WIDTH/2+SCALE*self.x+self.radius+1,
+                                         HEIGHT/2-SCALE*self.y+self.radius+1],
+                                        width = 1)
+        self.texte = None
+            
+    def delete(self) :
+        zone.delete(self.ID1)
+        zone.delete(self.ID2)
+        
+    def label(self,texte,xoff=0,yoff=0) :
+        if self.texte :
+            zone.delete(self.texte)
+        self.texte = zone.create_text([WIDTH/2+SCALE*self.x,
+                                       HEIGHT/2-SCALE*self.y],
+                                      text = texte,
+                                      anchor = tk.SW)
+
 class ligne :
     def __init__(self,x0,y0,theta,d) :
         self.children = []
@@ -29,7 +72,7 @@ class ligne :
         self.ID = zone.create_line([WIDTH/2+self.x0*SCALE,                                  #x1
                                     HEIGHT/2-self.y0*SCALE,                                 #y1
                                     WIDTH/2+(self.x0 + np.cos(self.theta)*self.d)*SCALE,    #x2
-                                    HEIGHT/2-(self.y0 + np.sin(self.theta)*self.d)*SCALE]) #y2
+                                    HEIGHT/2-(self.y0 + np.sin(self.theta)*self.d)*SCALE])  #y2
         self.texte = None
     
     def delete(self) :
@@ -109,6 +152,12 @@ class ellipse :
     def ligne(self, theta) :
         sortie = ligne(self.xf,self.yf,theta+self.theta,self.a*(1-self.e**2)/(1+self.e*np.cos(theta)))
         return sortie
+    
+    def foyer1(self) :
+        return point(self.xf, self.yf)
+    
+    def foyer2(self) :
+        return point(self.xf-2*self.e*self.a*np.cos(self.theta),self.yf-2*self.e*self.a*np.sin(self.theta))
         
 def affichage() :
     fenetre.mainloop()
