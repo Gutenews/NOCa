@@ -103,11 +103,29 @@ class ligne :
         self.y0 = y0
         self.theta = theta
         self.d = d
-        self.ID = zone.create_line([WIDTH/2+self.x0*SCALE,                                  #x1
-                                    HEIGHT/2-self.y0*SCALE,                                 #y1
-                                    WIDTH/2+(self.x0 + np.cos(self.theta)*self.d)*SCALE,    #x2
-                                    HEIGHT/2-(self.y0 + np.sin(self.theta)*self.d)*SCALE])  #y2
         self.texte = None
+        self.ID = None
+        self.dessin()
+        
+    def dessin(self) :
+        if self.ID :
+            zone.delete(self.ID)
+        self.ID = zone.create_line([WIDTH/2+self.x0*SCALE,                                  
+                                    HEIGHT/2-self.y0*SCALE,                                 
+                                    WIDTH/2+(self.x0 + np.cos(self.theta)*self.d)*SCALE,    
+                                    HEIGHT/2-(self.y0 + np.sin(self.theta)*self.d)*SCALE])  
+    
+    def pointille(self, schema=None) :
+        if self.ID :
+            zone.delete(self.ID)
+        if schema :
+            self.ID = zone.create_line([WIDTH/2+self.x0*SCALE,                                  
+                                        HEIGHT/2-self.y0*SCALE,                                 
+                                        WIDTH/2+(self.x0 + np.cos(self.theta)*self.d)*SCALE,    
+                                        HEIGHT/2-(self.y0 + np.sin(self.theta)*self.d)*SCALE],
+                                       dash = SCALE*schema)
+        else :
+            self.dessin()
     
     def delete(self) :
         for e in self.children :
