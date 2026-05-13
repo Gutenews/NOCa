@@ -79,8 +79,8 @@ class point :
     def label(self,texte,xoff=0,yoff=0) :
         if self.texte :
             zone.delete(self.texte)
-        self.texte = zone.create_text([WIDTH/2+SCALE*self.x,
-                                       HEIGHT/2-SCALE*self.y],
+        self.texte = zone.create_text([WIDTH/2+SCALE*(self.x+xoff),
+                                       HEIGHT/2-SCALE*(self.y+yoff)],
                                       text = texte,
                                       anchor = tk.SW,
                                       font=(FONT,FONTSIZE))
@@ -154,7 +154,7 @@ class ligne :
             self.children.append(p1)
         elif style=='D' :
             p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta)
-            p2 = fleche(self.x0, self.y0, -self.theta)
+            p2 = fleche(self.x0, self.y0, np.pi+self.theta)
             self.children.append(p1)
             self.children.append(p2)
     
