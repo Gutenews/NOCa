@@ -14,18 +14,22 @@ WIDTH = 128
 HEIGHT = 128
 WIDTH = SCALE*WIDTH
 HEIGHT = SCALE*HEIGHT
+FONT = "Courier"
+FONTSIZE = 12
 
 #creation de la fenetre
 fenetre = None
 zone = None
 
-def configure(width = 128, height = 128, scale=1) :
-    global zone, fenetre, WIDTH, HEIGHT, SCALE
+def configure(width = 128, height = 128, scale=1, font = "Courier",fontsize=12) :
+    global zone, fenetre, WIDTH, HEIGHT, SCALE, FONT, FONTSIZE
     SCALE = scale
     WIDTH = width
     HEIGHT = height
     WIDTH = SCALE*WIDTH
     HEIGHT = SCALE*HEIGHT
+    FONT = font
+    FONTSIZE = fontsize
     fenetre = tk.Tk()
     zone = tk.Canvas(fenetre, width=WIDTH, height=HEIGHT)
     fenetre.resizable(height=False,width=False)
@@ -72,7 +76,7 @@ class point :
                                        HEIGHT/2-SCALE*self.y],
                                       text = texte,
                                       anchor = tk.SW,
-                                      font="Courier")
+                                      font=(FONT,FONTSIZE))
     
     def ligne(self, point) :
         d = np.sqrt((self.x-point.x)**2+(self.y-point.y)**2)
@@ -105,7 +109,7 @@ class ligne :
                                        HEIGHT/2-SCALE*(self.y0+yoff+self.d*np.sin(self.theta)/2)],
                                       text = texte,
                                       anchor=tk.SW,
-                                      font="Courier")
+                                      font=(FONT,FONTSIZE))
     
     def style(self, style) :
         for e in self.children :
@@ -119,6 +123,12 @@ class ligne :
             p2 = fleche(self.x0, self.y0, -self.theta)
             self.children.append(p1)
             self.children.append(p2)
+    
+    def origine(self) :
+        return point(self.x0,self.y0)
+    
+    def extremite(self) :
+        return point(self.x0 + self.radius*np.cos(self.theta),self.y0 + self.radius*np.sin(self.theta))
     
     def cartesien(self) :
         a = np.tan(self.theta)
@@ -167,18 +177,24 @@ class angle :
                                        HEIGHT/2-SCALE*(self.y0+yoff+self.radius*np.sin(self.theta0+self.dtheta/2))],
                                       text=texte,
                                       anchor=tk.SW,
-                                      font="Courier")
+                                      font=(FONT,FONTSIZE))
 
     def style(self, style) :
         for e in self.children :
             e.delete()
             self.children.remove(e)
         if style == 'V' :
-            p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), self.y0+self.radius*np.sin(self.theta0+self.dtheta), self.theta0+self.dtheta+np.pi/2)
+            p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), 
+                        self.y0+self.radius*np.sin(self.theta0+self.dtheta), 
+                        self.theta0+self.dtheta+np.pi/2)
             self.children.append(p1)
         elif style == 'D' :
-            p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), self.y0+self.radius*np.sin(self.theta0+self.dtheta), self.theta0+self.dtheta+np.pi/2)
-            p2 = fleche(self.x0+self.radius*np.cos(self.theta0), self.y0+self.radius*np.sin(self.theta0), self.theta0-np.pi/2)
+            p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), 
+                        self.y0+self.radius*np.sin(self.theta0+self.dtheta), 
+                        self.theta0+self.dtheta+np.pi/2)
+            p2 = fleche(self.x0+self.radius*np.cos(self.theta0), 
+                        self.y0+self.radius*np.sin(self.theta0), 
+                        self.theta0-np.pi/2)
             self.children.append(p1)
             self.children.append(p2)
 
