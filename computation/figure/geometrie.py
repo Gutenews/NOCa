@@ -39,7 +39,12 @@ class point :
         self.x = x
         self.y = y
         self.radius = radius
-        self.scalable = scalable
+        self.scalable = scalable        
+        self.texte = None
+        
+        self.dessin()
+        
+    def dessin(self) :
         if self.scalable :
             self.ID1 = zone.create_line([WIDTH/2+SCALE*(self.x+self.radius),
                                          HEIGHT/2-SCALE*(self.y+self.radius),
@@ -63,11 +68,13 @@ class point :
                                          WIDTH/2+SCALE*self.x+self.radius+1,
                                          HEIGHT/2-SCALE*self.y+self.radius+1],
                                         width = 1)
-        self.texte = None
             
     def delete(self) :
-        zone.delete(self.ID1)
-        zone.delete(self.ID2)
+        if self.ID1 :
+            zone.delete(self.ID1)
+            zone.delete(self.ID2)
+        self.ID1 = None
+        self.ID2 = None
         
     def label(self,texte,xoff=0,yoff=0) :
         if self.texte :
@@ -77,6 +84,12 @@ class point :
                                       text = texte,
                                       anchor = tk.SW,
                                       font=(FONT,FONTSIZE))
+    
+    def translate(self, dx, dy) :
+        self.delete()
+        self.x += dx
+        self.y += dy
+        self.dessin()
     
     def ligne(self, point) :
         d = np.sqrt((self.x-point.x)**2+(self.y-point.y)**2)
@@ -263,6 +276,21 @@ class ellipse :
     
     def foyer2(self) :
         return point(self.xf-2*self.e*self.a*np.cos(self.theta),self.yf-2*self.e*self.a*np.sin(self.theta))
+    
+    def centre(self) :
+        return point(self.xf-self.a*self.e*np.cos(self.theta),self.yf-self.a*self.e*np.sin(self.theta))
+    
+    def petitaxe(self) :
+        return self.a*np.sqrt(1-self.e**2)
+    
+    def E2point(self,E):
+        centre = self.centre()
+        x0 = self.a*np.cos(E)
+        y0 = self.petitaxe()*np.sin(E)
+        x = x0*np.cos(self.theta)-y0*np.sin(self.theta)
+        y = x0*np.sin(self.theta)+y0*np.cos(self.theta)
+        centre.translate(x, y)
+        return centre
         
 def affichage() :    
     zone.pack()
