@@ -84,6 +84,9 @@ class point :
                                       text = texte,
                                       anchor = tk.SW,
                                       font=(FONT,FONTSIZE))
+        
+    def copie(self) :
+        return point(self.x,self.y,radius=self.radius,scalable=self.scalable)
     
     def translate(self, dx, dy) :
         self.delete()
