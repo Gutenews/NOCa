@@ -145,16 +145,16 @@ class ligne :
                                       anchor=tk.SW,
                                       font=(FONT,FONTSIZE))
     
-    def style(self, style) :
+    def style(self, style, scalable=False) :
         for e in self.children :
             e.delete()
             self.children.remove(e)
         if style=='V' :
-            p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta)
+            p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta, scalable=scalable)
             self.children.append(p1)
         elif style=='D' :
-            p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta)
-            p2 = fleche(self.x0, self.y0, np.pi+self.theta)
+            p1 = fleche(self.x0+self.d*np.cos(self.theta), self.y0+self.d*np.sin(self.theta), self.theta, scalable=scalable)
+            p2 = fleche(self.x0, self.y0, np.pi+self.theta, scalable=scalable)
             self.children.append(p1)
             self.children.append(p2)
     
@@ -213,22 +213,25 @@ class angle :
                                       anchor=tk.SW,
                                       font=(FONT,FONTSIZE))
 
-    def style(self, style) :
+    def style(self, style, scalable=False) :
         for e in self.children :
             e.delete()
             self.children.remove(e)
         if style == 'V' :
             p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), 
                         self.y0+self.radius*np.sin(self.theta0+self.dtheta), 
-                        self.theta0+self.dtheta+np.pi/2)
+                        self.theta0+self.dtheta+np.pi/2,
+                        scalable=scalable)
             self.children.append(p1)
         elif style == 'D' :
             p1 = fleche(self.x0+self.radius*np.cos(self.theta0+self.dtheta), 
                         self.y0+self.radius*np.sin(self.theta0+self.dtheta), 
-                        self.theta0+self.dtheta+np.pi/2)
+                        self.theta0+self.dtheta+np.pi/2,
+                        scalable=scalable)
             p2 = fleche(self.x0+self.radius*np.cos(self.theta0), 
                         self.y0+self.radius*np.sin(self.theta0), 
-                        self.theta0-np.pi/2)
+                        self.theta0-np.pi/2,
+                        scalable=scalable)
             self.children.append(p1)
             self.children.append(p2)
 
