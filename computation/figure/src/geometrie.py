@@ -234,6 +234,16 @@ class angle :
                         scalable=scalable)
             self.children.append(p1)
             self.children.append(p2)
+    
+    def droit(self) :
+        self.delete()
+        self.dtheta = np.pi/2
+        self.ID = zone.create_line([WIDTH/2+SCALE*(self.x0+np.cos(self.theta0)*self.radius),
+                                    HEIGHT/2-SCALE*(self.y0+np.sin(self.theta0)*self.radius),
+                                    WIDTH/2+SCALE*(self.x0+(np.cos(self.theta0)+np.cos(self.theta0+self.dtheta))*self.radius),
+                                    HEIGHT/2-SCALE*(self.y0+(np.sin(self.theta0)+np.sin(self.theta0+self.dtheta))*self.radius),
+                                    WIDTH/2+SCALE*(self.x0+np.cos(self.theta0+self.dtheta)*self.radius),
+                                    HEIGHT/2-SCALE*(self.y0+np.sin(self.theta0+self.dtheta)*self.radius)])
 
 class fleche :
     def __init__(self, x0, y0, theta, dtheta=np.pi/3, radius=7, scalable=False) :
