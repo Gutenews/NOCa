@@ -99,4 +99,41 @@ $x=acos(E)$ & et & $y=bsin(E)$
 On peut représenter sur l'ellipse deux cercles, le cercle principal de rayon a et le cercle secondaire de rayon b, tous deux centrés en le centre de l'ellipse (ici $O$). Ces deux cercles permettent de représenter à quoi l'anomalie excentrique correspond géométriquement.\\
 \indent Lorsqu'on a $E$, on peut lire sur le cercle principal l'abscisse du point qui y est associé (en l'occurence $M$) et son ordonnée sur le cercle secondaire.
 
+\clearpage
+\subsection*{Anomalie vraie}
+
+\begin{wrapfigure}[10]{l}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{A1_5.png}
+\end{wrapfigure}
+
+On peut remarquer que l'anomalie excentrique consiste à mesurer un angle qui caractérise le point autour du centre de l'ellipse. Mais on pourrait aussi bien mesurer un angle autour d'un des foyers, c'est l'anomalie vraie, dénotée $\theta$.\\
+On peut alors se placer dans un système de coordonées polaires pour déterminer le rayon $r$.
+\begin{align*}
+x-ae&=rcos(\theta)\\
+x&=rcos(\theta)+ae\\
+r&=a-e(rcos(\theta)+ae) \tag{A1.2}\\
+r(1+ecos(\theta))&=a(1-e^2)\\
+\end{align*}
+
+\begin{equation}
+\tag{A1.5}
+\label{eq:A1.5}
+\boxed{r=\frac{p}{1+ecos(\theta)}}
+\end{equation}
+Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent toutes les deux de caractériser un point de l'ellipse, il doit y avoir une fonction permettant de relier l'une à l'autre.
+
+\begin{align*}
+tan\left(\frac{\theta}{2}\right)&=\frac{sin(\theta)}{1+cos{\theta}}\\
+&=\frac{y}{r+x-ae}\\
+&=\frac{bsin(E)}{a-eacos(E)+acos(E)-ae}\\
+&=\frac{a\sqrt{1-e^2}sin(E)}{a(1-e)(1+cos(E))}\\
+\end{align*}
+
+\begin{equation}
+\tag{A1.6}
+\label{eq:A1.6}
+\boxed{tan\left(\frac{\theta}{2}\right)=\sqrt{\frac{1+e}{1-e}}tan\left(\frac{E}{2}\right)}
+\end{equation}
+
+
 \end{document}
