@@ -24,8 +24,8 @@ zone = None
 def configure(width = 128, height = 128, scale=1, font = "Courier",fontsize=12) :
     global zone, fenetre, WIDTH, HEIGHT, SCALE, FONT, FONTSIZE
     SCALE = scale
-    WIDTH = scale*WIDTH
-    HEIGHT = scale*HEIGHT
+    WIDTH = scale*width
+    HEIGHT = scale*height
     FONT = font
     FONTSIZE = fontsize
     fenetre = tk.Tk()
@@ -160,7 +160,7 @@ class ligne :
         return point(self.x0,self.y0)
     
     def extremite(self) :
-        return point(self.x0 + self.radius*np.cos(self.theta),self.y0 + self.radius*np.sin(self.theta))
+        return point(self.x0 + self.d*np.cos(self.theta),self.y0 + self.d*np.sin(self.theta))
     
     def cartesien(self) :
         a = np.tan(self.theta)
@@ -326,6 +326,7 @@ class ellipse :
         
 def affichage() :    
     zone.pack()
+    zone.update()
     fenetre.title("test")
     fenetre.mainloop()
 
