@@ -24,10 +24,8 @@ zone = None
 def configure(width = 128, height = 128, scale=1, font = "Courier",fontsize=12) :
     global zone, fenetre, WIDTH, HEIGHT, SCALE, FONT, FONTSIZE
     SCALE = scale
-    WIDTH = width
-    HEIGHT = height
-    WIDTH = SCALE*WIDTH
-    HEIGHT = SCALE*HEIGHT
+    WIDTH = scale*WIDTH
+    HEIGHT = scale*HEIGHT
     FONT = font
     FONTSIZE = fontsize
     fenetre = tk.Tk()
