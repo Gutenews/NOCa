@@ -8,7 +8,7 @@ import geometry3D as gm3D
 from numpy import pi
 from numpy import array
 
-gm3D.configure(height=110,width=110,scale=5,fontsize=24,phi=pi+pi/8,delta=-pi/6)
+gm3D.configure(height=90,width=110,scale=5,fontsize=32,phi=pi+pi/8,delta=-pi/6)
 
 plandefault = gm3D.Plane(gm3D.O3D, -pi/2, pi/2, 0.)
 plan2 = gm3D.Plane(gm3D.O3D, -pi/3, pi/6, 0.)
@@ -18,7 +18,7 @@ vecz = plandefault.normalVector(30.)
 vecn = plan2.normalVector(20.)
 
 vecx.draw()
-vecx.label("x",xoff=-9,yoff=-8)
+vecx.label("\u03B3",xoff=-9,yoff=-8) #gamma
 vecz.draw()
 vecz.style('V')
 vecz.label("z",xoff=-4,yoff=12)
@@ -29,6 +29,7 @@ vecn.label("C",xoff=-10,yoff=4)
 A0 = gm3D.Point2D(plandefault, array([[40.],[-30.]]))
 B0 = gm3D.Point2D(plandefault, array([[40.],[30.]]))
 C0 = gm3D.Point2D(plandefault, array([[-30.],[30.]]))
+A0.label("eq",xoff=4)
 D0 = gm3D.Point2D(plandefault, array([[-30.],[-30.]]))
 
 c01 = A0.line2D(B0)
@@ -39,6 +40,7 @@ c04 = D0.line2D(A0)
 A1 = gm3D.Point2D(plan2, array([[30.],[-30.]]))
 B1 = gm3D.Point2D(plan2, array([[30.],[30.]]))
 C1 = gm3D.Point2D(plan2, array([[-30.],[30.]]))
+C1.label("st",xoff=1,yoff=-4)
 D1 = gm3D.Point2D(plan2, array([[-30.],[-30.]]))
 
 c11 = A1.line2D(B1)
@@ -87,7 +89,7 @@ l.draw((5,5))
 lRAN = gm3D.Angle2D(plandefault, gm3D.O2D, 0., l.theta)
 lRAN.draw()
 lRAN.style('V')
-lRAN.label("\u038F",xoff=-1,yoff=-7) #Omega majuscule
+lRAN.label("\u038F",xoff=-2,yoff=-7) #Omega majuscule
 
 norm0 = gm3D.Line2D(plandefault, ran0.origin, 10., l.theta+pi/2)
 norm0.draw((5,5))
