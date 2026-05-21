@@ -1,4 +1,4 @@
-\documentclass{book}
+\documentclass{report}
 
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -13,7 +13,43 @@
 \maketitle
 
 \section*{Introduction}
-Ce document a pour but d'expliquer les calculs qui sont effectués dans la bibliothèque NOCa, aussi bien d'un point de vue physique que géométrique. Ce document présentera aussi les conventions utilisées dans cette bibliothèque.
+Ce document a pour but d'expliquer les calculs qui sont effectués dans la bibliothèque NOCa, aussi bien d'un point de vue physique que géométrique. Ce document présentera aussi les conventions utilisées dans cette bibliothèque. Dans la suite de ce document, on considérera un satellite de masse quelconque $m$ négligeable devant l'astre autour duquel il orbite de paramètre gravitationnel standard $\mu$ placé à l'origine. Le satellite sera alors à la position $\overrightarrow{r}$.
+
+\chapter{Paramètres orbitaux}
+
+\section{Définitions}
+
+On peut décrire la trajectoire d'un satellite avec des paramètres orbitaux. Avec ces paramètres, on peut déterminer la position et la vitesse d'un satellite.
+
+\subsection{Nœud ascendant}
+
+Avec le théorème du moment cinétique, on a :
+\begin{align*}
+\frac{d}{dt}\left(\overrightarrow{r}\wedge\frac{d\overrightarrow{r}}{dt}\right)&=\overrightarrow{r}\wedge\left(-\frac{\mu}{r^3}\overrightarrow{r}\right)\\
+&=\overrightarrow{0}
+\end{align*}
+
+\begin{equation}
+\label{eq:1.1}
+\boxed{\overrightarrow{r}\wedge\frac{d\overrightarrow{r}}{dt}=\overrightarrow{C}}
+\end{equation}
+\begin{align*}
+\overrightarrow{r}\cdot\overrightarrow{C}=\overrightarrow{0}
+\end{align*}
+
+\begin{wrapfigure}{l}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{1_1_1.png}
+\caption{plan de la trajectoire du satellite}
+\end{wrapfigure}
+
+Ainsi on peut voir que le satellite reste toujours dans le même plan (noté $st$ dans le schéma ci-contre) lors de sa trajectoire. Pour caractériser ce plan, on utilise deux angles :\\
+- $\Omega$, la longitude du nœud ascendant (noté $RAN$), le point où le satellite passe au nord du plan équatorial (noté $eq$ dans le schéma)\\
+- $i$, l'inclinaison de ce plan
+
+\clearpage
+\subsection{demi-grand axe et excentricité}
+
+
 
 \chapter*{Annexes géométriques}
 
@@ -135,6 +171,9 @@ tan\left(\frac{\theta}{2}\right)&=\frac{sin(\theta)}{1+cos{\theta}}\\
 \label{eq:A1.6}
 \boxed{tan\left(\frac{\theta}{2}\right)=\sqrt{\frac{1+e}{1-e}}tan\left(\frac{E}{2}\right)}
 \end{equation}
+
+\section{coordonnées polaires}
+
 
 
 \end{document}
