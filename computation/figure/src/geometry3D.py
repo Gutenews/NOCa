@@ -378,9 +378,12 @@ class Plane(GeometricObject3D) :
     def normalVector(self, length) :
         return Line3D(self.origin, length, self.phi, self.delta)
     
-    def pointProjection(self, coor) :
+    def coorProjection(self, coor) :
         projcoor = np.dot(self.positionmatrix.T,(coor-self.origin))
         return Point2D(self, projcoor)
+    
+    def pointProjection(self, point) :
+        return self.coorProjection(point.origin)
 
 class Sphere(GeometricObject3D):
     def __init__(self, origin, radius, phi=-np.pi/2, delta=np.pi/2) :
@@ -397,7 +400,7 @@ class Sphere(GeometricObject3D):
         tempvec2 = Line3D(self.origin, 1., phi2, delta2)
         
         rivet=tempvec.endPoint3D()
-        rivet2D = self.plane.pointProjection(rivet.origin)
+        rivet2D = self.plane.coorProjection(rivet.origin)
         theta = np.atan2(rivet2D.origin[1,0], rivet2D.origin[0,0])
         self.backarc =Angle2D(self.plane, O2D, theta,-np.pi,radius=self.radius)
         self.frontarc=Angle2D(self.plane, O2D, theta, np.pi,radius=self.radius)
