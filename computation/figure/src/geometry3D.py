@@ -24,7 +24,34 @@ CANVAS = None
 O2D = np.array([[0.],[0.]])
 O3D = np.array([[0.],[0.],[0.]])
 
-def configure(scale=1, precision=2.**(-15), width=1, height=1, font="Courier", fontsize=12, phi=0, delta=0) :
+def configure(scale=1, precision=2.**(-15), width=128, height=128, font="Courier", fontsize=12, phi=0, delta=0) :
+    """
+    to configure the settings of geometry3D. Must be called before doing anything with this library
+
+    Parameters
+    ----------
+    scale : float, optional
+        to scale up or scale down the drawing. The default is 1.
+    precision : TYPE, optional
+        the precision of checks like in intersections, scales automatically with scale. The default is 2.**(-15).
+    width : int, optional
+        the width of the unscaled drawing. The default is 128.
+    height : int, optional
+        the height of the unscaled drawing. The default is 128.
+    font : string, optional
+        the font used for the labels. The default is "Courier".
+    fontsize : int, optional
+        the size of the font used for the label. The default is 12.
+    phi : float, optional
+        longitude of where the camera is pointing TO. The default is 0.
+    delta : TYPE, optional
+        latitude of where the camera is pointing TO. The default is 0.
+
+    Returns
+    -------
+    None
+    """
+    
     global SCALE, PRECISION, WIDTH, HEIGHT, FONT, FONT_SIZE, PHI, DELTA, WINDOW, CANVAS, PROJECTION_MATRIX
     SCALE = scale
     PRECISION = precision*scale
@@ -157,13 +184,19 @@ class Line3D(GeometricObject3D) :
                                                  [np.sin(self.phi)*np.cos(self.delta)],
                                                  [np.sin(self.delta)]])
     
-    def draw(self) :
+    def endPoint3D(self) :
+        return Point3D(self.endCoor3D())
+    
+    def draw(self, dash=None) :
         self.undraw()
         start = screenProjection(self.origin)
         end = screenProjection(self.endCoor3D())
         line = np.concat((start,end),axis=1)
         line=np.ravel(line,order='F')
-        CANVAS.create_line(line.tolist())
+        if dash :
+            self.ID = CANVAS.create_line(line.tolist(),dash=SCALE*dash)
+        else :
+            self.ID = CANVAS.create_line(line.tolist())
 
     def label(self, text, xoff=0., yoff=0.) :
         pos = self.cartesianVector()/2
@@ -223,14 +256,14 @@ class Line3D(GeometricObject3D) :
         return Angle3D(self.intersectionCoor(line3D), phi, delta, omega0.item(), domega.item())
 
 class Angle3D(GeometricObject3D):
-    def __init__(self, origin, phi, delta, omega0, domega, radius=2, part=5) :
+    def __init__(self, origin, phi, delta, omega0, domega, radius=10., part=5, scalable=True) :
         super().__init__(origin)
         self.phi = phi
         self.delta = delta
         self.omega0 = omega0
         self.domega = domega
-        self.radius=radius*SCALE
-        self.part = part*SCALE
+        self.radius=radius/(SCALE**(not scalable))
+        self.part = part*(SCALE**scalable)
         self.children = []
     
     def startCoor3D(self) :
@@ -239,14 +272,17 @@ class Angle3D(GeometricObject3D):
     def endCoor3D(self) :
         return self.origin+self.radius*np.dot(positionMatrix(self.phi, self.delta),np.array([[np.cos(self.omega0+self.domega)],[np.sin(self.omega0+self.domega)]]))
     
-    def draw(self) :
+    def draw(self, dash=None) :
         omega = np.linspace(self.omega0, self.omega0+self.domega,num=self.part)
         circle = np.stack((np.cos(omega),np.sin(omega)),axis=0)
         circle = self.radius*np.matmul(positionMatrix(self.phi, self.delta),circle)
         circle = self.origin @ np.ones((1,circle.shape[1]))+circle
         circle = screenProjection(circle)
         circle = np.ravel(circle,order='F')
-        self.ID = CANVAS.create_line(circle.tolist())
+        if dash :
+            self.ID = CANVAS.create_line(circle.tolist(),dash=SCALE*dash)
+        else :
+            self.ID = CANVAS.create_line(circle.tolist())
     
     def label(self,text,xoff=0.,yoff=0.):
         pos=self.radius*np.dot(positionMatrix(self.phi, self.delta),np.array([[np.cos(self.omega0+self.domega/2)],[np.sin(self.omega0+self.domega/2)]]))
@@ -346,6 +382,43 @@ class Plane(GeometricObject3D) :
         projcoor = np.dot(self.positionmatrix.T,(coor-self.origin))
         return Point2D(self, projcoor)
 
+class Sphere(GeometricObject3D):
+    def __init__(self, origin, radius, phi=-np.pi/2, delta=np.pi/2) :
+        super().__init__(origin)
+        self.radius = radius
+        self.phi = phi
+        self.delta = delta
+        self.plane = Plane(self.origin, phi, delta, 0.)
+        
+        away = Line3D(self.origin, 1., PHI, DELTA)
+        _,phi1,delta1 = cartesian2Spherical((self.plane.normalVector(1.).crossProduct(away)).cartesianVector())
+        tempvec=Line3D(self.origin, self.radius, phi1, delta1)
+        _,phi2,delta2 = cartesian2Spherical((tempvec.crossProduct(away)).cartesianVector())
+        tempvec2 = Line3D(self.origin, 1., phi2, delta2)
+        
+        rivet=tempvec.endPoint3D()
+        rivet2D = self.plane.pointProjection(rivet.origin)
+        theta = np.atan2(rivet2D.origin[1,0], rivet2D.origin[0,0])
+        self.backarc =Angle2D(self.plane, O2D, theta,-np.pi,radius=self.radius)
+        self.frontarc=Angle2D(self.plane, O2D, theta, np.pi,radius=self.radius)
+        
+        temparc=tempvec.angle(tempvec2)
+        self.downarc=Angle3D(self.origin, temparc.phi, temparc.delta, temparc.omega0, np.pi, radius=radius)
+        self.uparc=Angle3D(self.origin, temparc.phi, temparc.delta, temparc.omega0,-np.pi, radius=radius)
+        
+    def undraw(self) :
+        self.backarc.undraw()
+        self.downarc.undraw()
+        self.frontarc.undraw()
+        self.uparc.undraw()
+    
+    def draw(self) :
+        self.undraw()
+        self.backarc.draw((5,5))
+        self.downarc.draw((5,5))
+        self.uparc.draw()
+        self.frontarc.draw()
+
 class Point2D(GeometricObject2D):
     def __init__(self, plane, origin, radius=3, scalable=False) :
         super().__init__(plane, origin)
@@ -422,20 +495,23 @@ class Line2D(GeometricObject2D):
         return Point2D(self.plane, self.origin-(k.item()/k1.item())*self.length*np.array([[np.cos(self.theta)],[np.sin(self.theta)]]))
 
 class Angle2D(GeometricObject2D) :
-    def __init__(self, plane, origin, theta0, dtheta, radius = 2., part=5) :
+    def __init__(self, plane, origin, theta0, dtheta, radius = 10., part=5,scalable=True) :
         super().__init__(plane, origin)
         self.theta0 = theta0
         self.dtheta = dtheta
-        self.radius = radius*SCALE
-        self.part = SCALE*part
+        self.radius = radius/(SCALE**(not scalable))
+        self.part = (SCALE**scalable)*part
         self.children = []
     
-    def draw(self) :
+    def draw(self, dash=None) :
         theta = np.linspace(self.theta0,self.theta0+self.dtheta,num=self.part)
         circle = np.stack((np.cos(theta),np.sin(theta)),axis=0)
         circle = self.plane.screenPosition(self.radius*circle)
         circle = np.ravel(circle, order='F')
-        self.ID = CANVAS.create_line(circle.tolist())
+        if dash :
+            self.ID = CANVAS.create_line(circle.tolist(),dash = SCALE*dash)
+        else :
+            self.ID = CANVAS.create_line(circle.tolist())
         
     def label(self, text, xoff=0., yoff=0.) :
         pos = self.radius*np.array([[np.cos(self.theta0+self.dtheta/2)],[np.sin(self.theta0+self.dtheta/2)]])
