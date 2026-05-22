@@ -74,7 +74,7 @@ Sur la figure ci-contre M appartient à l'ellipse tracée.
 
 \subsection*{Équation cartésienne de l'ellipse}
 
-L'ellipse définie comme au-dessus ne permet de la tracer faciliment car une équation comme (\ref{eq:A1.1}) est plus qu'implicite. On va alors trouver une forme cartésienne de cette équation.
+L'ellipse définie comme au-dessus ne permet de la tracer facilement car une équation comme (\ref{eq:A1.1}) est plus qu'implicite. On va alors trouver une forme cartésienne de cette équation.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A1_2.png}
@@ -113,7 +113,7 @@ où $b=a\sqrt{1-e^2}$ est la longueur du demi petit axe
 
 \subsection*{Anomalie excentrique}
 
-On peut se rendre compte que l'équation cartesienne de l'ellipse ressemble beaucoup à celle du cercle et donc l'idée d'utliser un angle pour caractériser la position d'un point sur l'ellipse semble cohérente.
+On peut se rendre compte que l'équation cartésienne de l'ellipse ressemble beaucoup à celle du cercle et donc l'idée d'utiliser un angle pour caractériser la position d'un point sur l'ellipse semble cohérente.
 
 Ainsi avec 
 }
@@ -122,7 +122,7 @@ Ainsi avec
 \tag{A1.4}
 \boxed{
 \begin{tabular}{c c c}
-$x=acos(E)$ & et & $y=bsin(E)$
+$x=a\cos(E)$ & et & $y=b\sin(E)$
 \end{tabular}
 }
 \end{equation}
@@ -134,7 +134,7 @@ $x=acos(E)$ & et & $y=bsin(E)$
 \end{wrapfigure}
 
 On peut représenter sur l'ellipse deux cercles, le cercle principal de rayon a et le cercle secondaire de rayon b, tous deux centrés en le centre de l'ellipse (ici $O$). Ces deux cercles permettent de représenter à quoi l'anomalie excentrique correspond géométriquement.\\
-\indent Lorsqu'on a $E$, on peut lire sur le cercle principal l'abscisse du point qui y est associé (en l'occurence $M$) et son ordonnée sur le cercle secondaire.
+\indent Lorsqu'on a $E$, on peut lire sur le cercle principal l'abscisse du point qui y est associé (en l'occurrence $M$) et son ordonnée sur le cercle secondaire.
 
 \clearpage
 \subsection*{Anomalie vraie}
@@ -144,36 +144,77 @@ On peut représenter sur l'ellipse deux cercles, le cercle principal de rayon a 
 \end{wrapfigure}
 
 On peut remarquer que l'anomalie excentrique consiste à mesurer un angle qui caractérise le point autour du centre de l'ellipse. Mais on pourrait aussi bien mesurer un angle autour d'un des foyers, c'est l'anomalie vraie, dénotée $\theta$.\\
-On peut alors se placer dans un système de coordonées polaires pour déterminer le rayon $r$.
+On peut alors se placer dans un système de coordonnées polaires pour déterminer le rayon $r$.
 \begin{align*}
-x-ae&=rcos(\theta)\\
-x&=rcos(\theta)+ae\\
-r&=a-e(rcos(\theta)+ae) \tag{A1.2}\\
-r(1+ecos(\theta))&=a(1-e^2)\\
+x-ae&=r\cos(\theta)\\
+x&=r\cos(\theta)+ae\\
+r&=a-e(r\cos(\theta)+ae) \tag{A1.2}\\
+r(1+e\cos(\theta))&=a(1-e^2)\\
 \end{align*}
 
 \begin{equation}
 \tag{A1.5}
 \label{eq:A1.5}
-\boxed{r=\frac{p}{1+ecos(\theta)}}
+\boxed{r=\frac{p}{1+e\cos(\theta)}}
 \end{equation}
 Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent toutes les deux de caractériser un point de l'ellipse, il doit y avoir une fonction permettant de relier l'une à l'autre.
 
 \begin{align*}
-tan\left(\frac{\theta}{2}\right)&=\frac{sin(\theta)}{1+cos{\theta}}\\
+\tan\left(\frac{\theta}{2}\right)&=\frac{\sin(\theta)}{1+\cos{\theta}}\\
 &=\frac{y}{r+x-ae}\\
-&=\frac{bsin(E)}{a-eacos(E)+acos(E)-ae}\\
-&=\frac{a\sqrt{1-e^2}sin(E)}{a(1-e)(1+cos(E))}\\
+&=\frac{b\sin(E)}{a-ea\cos(E)+a\cos(E)-ae}\\
+&=\frac{a\sqrt{1-e^2}\sin(E)}{a(1-e)(1+\cos(E))}\\
 \end{align*}
 
 \begin{equation}
 \tag{A1.6}
 \label{eq:A1.6}
-\boxed{tan\left(\frac{\theta}{2}\right)=\sqrt{\frac{1+e}{1-e}}tan\left(\frac{E}{2}\right)}
+\boxed{\tan\left(\frac{\theta}{2}\right)=\sqrt{\frac{1+e}{1-e}}\tan\left(\frac{E}{2}\right)}
 \end{equation}
 
-\section{coordonnées polaires}
+\clearpage
+\section*{Coordonnées Polaires}
+{
+\begin{wrapfigure}{r}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{A2_1.png}
+\end{wrapfigure}
 
+\subsection*{Présentation}
 
+Habituellement dans un espace en deux dimensions, on se repère à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, on va présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$).
 
+On définit $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine :
+\begin{align*}
+r&=\|\overrightarrow{OM}\|\\
+x&=r\cos\theta &y&=r\sin\theta\\
+\overrightarrow{e_r}&=\frac{\overrightarrow{OM}}{r}=\cos\theta\overrightarrow{e_x}+\sin\theta\overrightarrow{e_y}\\
+\overrightarrow{e_\theta}&=-\sin\theta\overrightarrow{e_x}+\cos\theta\overrightarrow{e_y}
+\end{align*}
+\\}
+Avec ces définitions, \boxed{\overrightarrow{OM}=x\overrightarrow{e_x}+y\overrightarrow{e_y}=r\overrightarrow{e_r}}
+
+\subsection*{Différenciation}
+
+Contrairement à $\overrightarrow{e_x}$ et $\overrightarrow{e_y}$ qui sont immobiles, $\overrightarrow{e_r}$ et $\overrightarrow{e_\theta}$ changent en fonction de la position d'où ils sont calculés. Donc ils ne doivent pas être considérés comme des constantes lors des calculs de dérivation et d'intégration.
+\begin{align*}
+d\overrightarrow{e_r}&=d\left(\cos\theta\overrightarrow{e_x}+\sin\theta\overrightarrow{e_y}\right)&d\overrightarrow{e_\theta}&=d\left(-\sin\theta\overrightarrow{e_x}+\cos\theta\overrightarrow{e_y}\right)\\
+&=-\sin\theta d\theta\overrightarrow{e_x}+\cos\theta d\theta\overrightarrow{e_y}&&=-\cos\theta d\theta\overrightarrow{e_x}-\sin\theta d\theta\overrightarrow{e_y}
+\end{align*}
+\begin{center}
+\boxed{
+\begin{tabular}{c c c}
+$d\overrightarrow{e_r}=d\theta\overrightarrow{e_\theta}$&et&$d\overrightarrow{e_\theta}=-d\theta\overrightarrow{e_r}$
+\end{tabular}}
+\end{center}
+
+\begin{align*}
+d\overrightarrow{OM}&=d\left(r\overrightarrow{e_r}\right)&d^2\overrightarrow{OM}&=d\left(d\overrightarrow{OM}\right)\\
+&=dr\overrightarrow{e_r}+rd\overrightarrow{e_r}&&=d\left(dr\overrightarrow{e_r}+rd\theta\overrightarrow{e_\theta}\right)\\
+\end{align*}
+\boxed{
+\begin{tabular}{c c c}
+$d\overrightarrow{OM}=dr\overrightarrow{e_r}+rd\theta\overrightarrow{e_\theta}$&
+et&
+$d^2\overrightarrow{OM}=\left(d^2-r(d\theta)^2\right)\overrightarrow{e_r}+\left(rd^2\theta+2drd\theta\right)\overrightarrow{e_\theta}$
+\end{tabular}}
 \end{document}
