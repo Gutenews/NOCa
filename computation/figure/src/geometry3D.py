@@ -440,6 +440,7 @@ class Line2D(GeometricObject2D):
         super().__init__(plane, origin)
         self.length = length
         self.theta = theta
+        self.children = []
     
     def draw(self,dash=None):
         self.undraw()
@@ -459,6 +460,22 @@ class Line2D(GeometricObject2D):
     
     def endCoor3D(self) :
         return self.plane.absolutePosition(self.endCoor2D())
+    
+    def style(self, style) :
+        for e in self.children :
+            e.undraw()
+        if style=='V' :
+            arw1 = Arrow2D(self.plane, self.endCoor2D(), self.theta)
+            arw1.draw()
+            self.children.append(arw1)
+        
+        elif style=='D' :
+            arw1 = Arrow2D(self.plane, self.endCoor2D(), self.theta)
+            arw1.draw()
+            self.children.append(arw1)
+            arw2 = Arrow2D(self.plane, self.endCoor2D(), (self.theta+np.pi)%(2*np.pi))
+            arw2.draw()
+            self.children.append(arw2)
     
     def line3D(self) :
         origin = Point3D(self.originCoor3D())
