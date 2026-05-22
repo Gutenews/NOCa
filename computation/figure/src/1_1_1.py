@@ -82,7 +82,7 @@ c14d.draw()
 
 ran = c11b.point3D()
 ran.label("RAN",xoff=-5,yoff=-7)
-ran0= plandefault.pointProjection(ran.origin)
+ran0= plandefault.pointProjection(ran)
 Oplandefault = gm3D.Point2D(plandefault, gm3D.O2D)
 l=Oplandefault.line2D(ran0)
 l.draw((5,5))
