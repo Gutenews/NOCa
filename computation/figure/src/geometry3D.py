@@ -480,6 +480,20 @@ class Line2D(GeometricObject2D):
             arw2.draw()
             self.children.append(arw2)
     
+    def intersectionCoor(self, line2D) :
+        if self.theta%np.pi==line2D.theta%np.pi :
+            raise Exception("the two vectors are colinear")
+        A1 = np.array([np.tan(self.theta),-1.])
+        A2 = np.array([np.tan(line2D.theta),-1.])
+        b1 = (np.dot(A1, self.origin)).item()
+        b2 = (np.dot(A2, line2D.origin)).item()
+        A = np.stack((A1,A2),axis=0)
+        return np.linalg.solve(A, np.array([[b1],[b2]]))
+    
+    def angle2D(self, line2D) :
+        origin = self.intersectionCoor(line2D)
+        return Angle2D(self.plane, origin, self.theta, line2D.theta-self.theta)
+    
     def line3D(self) :
         origin = Point3D(self.originCoor3D())
         endpoint = Point3D(self.endCoor3D())
