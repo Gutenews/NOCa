@@ -44,6 +44,7 @@ r1 = gm3D.Line3D(plan.origin, rayon, pi/3, pi/3)
 r2 = gm3D.Line3D(r1.endCoor3D(), 60.-rayon, r1.phi, r1.delta)
 r1.draw((5,5))
 r2.draw()
+r2.label("r",xoff=-3,yoff=-2)
 M = r2.endPoint3D()
 M.label("M",xoff=2,yoff=-5)
 
