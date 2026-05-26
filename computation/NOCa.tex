@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{mathtools}
 
 \graphicspath{{figure/out/}}
@@ -184,7 +185,7 @@ Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent t
 
 Habituellement dans un espace en deux dimensions, on se repère à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, on va présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$), ces deux vecteurs étant unitaires.\\\\
 
-On définit $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine : 
+\noindent On définit $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine : 
 }\begin{align*}
 \overrightarrow{OM}&=\overrightarrow r=r\cos\theta\overrightarrow{e_x}+r\sin\theta\overrightarrow{e_y}\\
 \frac{\partial\overrightarrow r}{\partial r}&=k_r\overrightarrow{e_r}&\frac{\partial\overrightarrow r}{\partial\theta}&=k_\theta\overrightarrow{e_\theta}\tag{$k_r,k_\theta>0$}\\
@@ -220,4 +221,62 @@ $d\overrightarrow{r}=dr\overrightarrow{e_r}+rd\theta\overrightarrow{e_\theta}$&
 et&
 $d^2\overrightarrow{r}=\left(d^2-r(d\theta)^2\right)\overrightarrow{e_r}+\left(rd^2\theta+2drd\theta\right)\overrightarrow{e_\theta}$
 \end{tabular}}
+
+
+\clearpage
+\section*{Coordonnées Sphériques Géographiques}
+\subsection*{Présentation}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{A3_1.png}
+\end{wrapfigure}
+Comme pour l'annexe précédente, nous allons définir un autre système de coordonnées mais non pour $\mathbb R^2$ mais pour $\mathbb R^3$. Ici, nous traiterons du système de coordonnées sphériques géographique ($r$,$\phi$,$\delta$) où $\phi$ et $\delta$ sont respectivement la longitude et la latitude.
+Mais avant, nous allons définir le repère cartésien autour d'une boule tournante (la Terre par exemple). On définit $\overrightarrow{e_z}$ comme le vecteur colinéaire au moment cinétique de la boule, en terme géographique, le nord. On définit $\overrightarrow{e_x}$ comme un vecteur unitaire pointant vers un point fixe dans le ciel, par exemple le point vernal en 2000 (noté $\gamma$) pour la Terre c'est-à-dire, la position du Soleil lors de l'équinoxe de printemps en 2000, $\overrightarrow{e_x}$ étant dans le plan équatorial, $\overrightarrow{e_x}\cdot\overrightarrow{e_z}=0$. Ainsi on définit $\overrightarrow{e_y}=\overrightarrow{e_z}\wedge\overrightarrow{e_x}$  afin que ($\overrightarrow{e_x}$,$\overrightarrow{e_y}$,$\overrightarrow{e_z}$) soit un repère orthonormé direct. On définit $r$, $\phi$, $\delta$, $\overrightarrow{e_r}$, $\overrightarrow{e_\phi}$, et $\overrightarrow{e_\delta}$ tel que pour repérer M avec O comme origine :
+\begin{align*}
+\overrightarrow{OM}&=\overrightarrow r= r\cos\phi\cos\delta\overrightarrow{e_x}+r\sin\phi\cos\delta\overrightarrow{e_y}+r\sin\delta\overrightarrow{e_z}\\
+\frac{\partial\overrightarrow{r}}{\partial r}&=k_r\overrightarrow{e_r}\\
+&=\cos\phi\cos\delta\overrightarrow{e_x}+\sin\phi\cos\delta\overrightarrow{e_y}+\sin\delta\overrightarrow{e_z}\\
+k_r&=1\\
+\Aboxed{\overrightarrow{e_r}&=\cos\phi\cos\delta\overrightarrow{e_x}+\sin\phi\cos\delta\overrightarrow{e_y}+\sin\delta\overrightarrow{e_z}}\\
+\frac{\partial\overrightarrow{r}}{\partial\phi}&=k_\phi\overrightarrow{e_\phi}\\
+&=-r\sin\phi\cos\delta\overrightarrow{e_x}+r\cos\phi\cos\delta\overrightarrow{e_y}\\
+k_\phi&=r\cos\delta\\
+\Aboxed{\overrightarrow{e_\phi}&=-\sin\phi\overrightarrow{e_x}+\cos\phi\overrightarrow{e_y}}\\
+\frac{\partial\overrightarrow{r}}{\partial\delta}&=k_\delta\overrightarrow{e_\delta}\\
+&=-r\cos\phi\sin\delta\overrightarrow{e_x}-r\sin\phi\sin\delta\overrightarrow{e_y}+r\cos\delta\overrightarrow{e_z}\\
+k_\delta&=r\\
+\Aboxed{\overrightarrow{e_\delta}&=-\cos\phi\sin\delta\overrightarrow{e_x}-\sin\phi\sin\delta\overrightarrow{e_y}+\cos\delta\overrightarrow{e_z}}\\
+\end{align*}
+\clearpage
+On remarque aussi $\overrightarrow{e_r}\cdot\overrightarrow{e_\phi}=\overrightarrow{e_r}\cdot\overrightarrow{e_\delta}=\overrightarrow{e_\phi}\cdot\overrightarrow{e_\delta}=0$ et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\phi}=\overrightarrow{e_\delta}$ faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\phi}$,$\overrightarrow{e_\delta}$) un repère orthonormé direct.
+
+\subsection*{Différenciation}
+Comme pour le repère polaire, les vecteurs $\overrightarrow{e_r}$, $\overrightarrow{e_\phi}$, et $\overrightarrow{e_\delta}$ ne sont pas immobiles. donc leur différentielle n'est pas forcément nulle.
+
+\begin{align*}
+d\overrightarrow{e_r}&=-\sin\phi\cos\delta d\phi\overrightarrow{e_x}+\cos\phi\cos\delta d\phi\overrightarrow{e_y}\\
+&\quad-\cos\phi\sin\delta d\delta\overrightarrow{e_x}-\sin\phi\sin\delta d\delta\overrightarrow{e_y}+\cos\delta d\delta\overrightarrow{e_z}\\
+\Aboxed{d\overrightarrow{e_r}&=\cos\delta d\phi\overrightarrow{e_\phi}+d\delta\overrightarrow{e_\delta}}\\
+d\overrightarrow{e_\phi}&=\cos\phi d\phi\overrightarrow{e_x}-\sin\phi d\phi\overrightarrow{e_y}\\
+\Aboxed{d\overrightarrow{e_\phi}&=\cos\delta d\phi\overrightarrow{e_r}-\sin\delta d\phi\overrightarrow{e_\delta}}\\
+d\overrightarrow{e_\delta}&=\sin\phi\sin\delta d\phi\overrightarrow{e_x}-\cos\phi\sin\delta d\phi\overrightarrow{e_y}\\
+&\quad-\cos\phi\cos\delta d\delta\overrightarrow{e_x}-\sin\phi\cos\delta d\delta\overrightarrow{e_y}-\sin\delta d\delta\overrightarrow{e_z}\\
+\Aboxed{d\overrightarrow{e_\delta}&=-\sin\delta d\phi\overrightarrow{e_\phi}-d\delta\overrightarrow{e_r}}
+\end{align*}
+\begin{align*}
+\Aboxed{d\overrightarrow{r}&=dr\overrightarrow{e_r}+r\cos\delta d\phi\overrightarrow{e_\phi}+rd\delta\overrightarrow{e_\delta}}\\
+d^2\overrightarrow{r}&=d^2r\overrightarrow{e_r}+\cos\delta drd\phi\overrightarrow{e_\phi}+drd\delta\overrightarrow{e_\delta}\\
+&+\cos\delta drd\phi\overrightarrow{e_\phi}-r\sin\delta d\phi d\delta\overrightarrow{e_\phi}+r\cos\delta d^2\phi\overrightarrow{e_\phi}\\
+&+r\cos^2\delta(d\phi)^2\overrightarrow{e_r}-r\sin\delta\cos\delta(d\phi)^2\overrightarrow{e_\delta}\\
+&+drd\delta\overrightarrow{e_\delta}+rd^2\delta\overrightarrow{e_\delta}-r\sin\delta d\phi d\delta\overrightarrow{e_\phi}-r(d\delta)^2\overrightarrow{e_r}
+\end{align*}
+\begin{center}\boxed{
+\begin{matrix}d^2\overrightarrow{r}\\\quad\\\quad\end{matrix}\begin{matrix*}[l]
+=(d^2r+r\cos^2\delta(d\phi)^2-r(d\delta)^2)\overrightarrow{e_r}\\
++\:(r\cos\delta d^2\phi+2r(\cos\delta-\sin\delta) drd\phi)\overrightarrow{e_\phi}\\
++\:(rd^2\delta+2drd\delta-r\sin\delta\cos\delta(d\phi)^2)\overrightarrow{e_\delta}
+\end{matrix*}
+}\end{center}
+
+
 \end{document}
