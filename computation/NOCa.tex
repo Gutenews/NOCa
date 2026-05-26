@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{amsmath}
+\usepackage{mathtools}
 
 \graphicspath{{figure/out/}}
 
@@ -175,23 +176,25 @@ Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent t
 \clearpage
 \section*{Coordonnées Polaires}
 {
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}[9]{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A2_1.png}
 \end{wrapfigure}
 
 \subsection*{Présentation}
 
-Habituellement dans un espace en deux dimensions, on se repère à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, on va présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$).
+Habituellement dans un espace en deux dimensions, on se repère à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, on va présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$), ces deux vecteurs étant unitaires.\\\\
 
-On définit $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine :
-\begin{align*}
-r&=\|\overrightarrow{OM}\|\\
-x&=r\cos\theta &y&=r\sin\theta\\
-\overrightarrow{e_r}&=\frac{\overrightarrow{OM}}{r}=\cos\theta\overrightarrow{e_x}+\sin\theta\overrightarrow{e_y}\\
-\overrightarrow{e_\theta}&=-\sin\theta\overrightarrow{e_x}+\cos\theta\overrightarrow{e_y}
+On définit $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine : 
+}\begin{align*}
+\overrightarrow{OM}&=\overrightarrow r=r\cos\theta\overrightarrow{e_x}+r\sin\theta\overrightarrow{e_y}\\
+\frac{\partial\overrightarrow r}{\partial r}&=k_r\overrightarrow{e_r}&\frac{\partial\overrightarrow r}{\partial\theta}&=k_\theta\overrightarrow{e_\theta}\tag{$k_r,k_\theta>0$}\\
+&=\cos\theta\overrightarrow{e_x}+\sin\theta\overrightarrow{e_y}&&=-r\sin\theta\overrightarrow{e_x}+r\cos\theta\overrightarrow{e_y}\\
+k_r&=1&k_\theta&=r\\
+\Aboxed{\overrightarrow{e_r}&=\cos\theta\overrightarrow{e_x}+\sin\theta\overrightarrow{e_y}}&
+\Aboxed{\overrightarrow{e_\theta}&=-\sin\theta\overrightarrow{e_x}+\cos\theta\overrightarrow{e_y}}
 \end{align*}
-\\}
-Avec ces définitions, \boxed{\overrightarrow{OM}=x\overrightarrow{e_x}+y\overrightarrow{e_y}=r\overrightarrow{e_r}}
+
+On remarque que \boxed{\overrightarrow{e_r}\cdot\overrightarrow{e_\theta}=0} et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}=\overrightarrow{e_z}$, faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\theta}$) un repère orthonormé direct.
 
 \subsection*{Différenciation}
 
@@ -208,13 +211,13 @@ $d\overrightarrow{e_r}=d\theta\overrightarrow{e_\theta}$&et&$d\overrightarrow{e_
 \end{center}
 
 \begin{align*}
-d\overrightarrow{OM}&=d\left(r\overrightarrow{e_r}\right)&d^2\overrightarrow{OM}&=d\left(d\overrightarrow{OM}\right)\\
+d\overrightarrow{r}&=d\left(r\overrightarrow{e_r}\right)&d^2\overrightarrow{r}&=d\left(d\overrightarrow{r}\right)\\
 &=dr\overrightarrow{e_r}+rd\overrightarrow{e_r}&&=d\left(dr\overrightarrow{e_r}+rd\theta\overrightarrow{e_\theta}\right)\\
 \end{align*}
 \boxed{
 \begin{tabular}{c c c}
-$d\overrightarrow{OM}=dr\overrightarrow{e_r}+rd\theta\overrightarrow{e_\theta}$&
+$d\overrightarrow{r}=dr\overrightarrow{e_r}+rd\theta\overrightarrow{e_\theta}$&
 et&
-$d^2\overrightarrow{OM}=\left(d^2-r(d\theta)^2\right)\overrightarrow{e_r}+\left(rd^2\theta+2drd\theta\right)\overrightarrow{e_\theta}$
+$d^2\overrightarrow{r}=\left(d^2-r(d\theta)^2\right)\overrightarrow{e_r}+\left(rd^2\theta+2drd\theta\right)\overrightarrow{e_\theta}$
 \end{tabular}}
 \end{document}
