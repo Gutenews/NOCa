@@ -538,6 +538,7 @@ class Angle2D(GeometricObject2D) :
         self.children = []
     
     def draw(self, dash=None) :
+        self.undraw()
         theta = np.linspace(self.theta0,self.theta0+self.dtheta,num=self.part)
         circle = np.stack((np.cos(theta),np.sin(theta)),axis=0)
         circle = self.plane.screenPosition(self.radius*circle)
