@@ -590,6 +590,47 @@ class Arrow2D(GeometricObject2D) :
         line = self.plane.screenPosition(line)
         line = np.ravel(line, order='F')
         self.ID = CANVAS.create_line(line.tolist())
+
+class Ellipse(GeometricObject2D) :
+    def __init__(self, plane, origin, a, e, theta0, part=20) :
+        super().__init__(plane, origin)
+        self.a = a
+        self.e = e
+        self.theta0 = theta0
+        self.part=SCALE*part
+    
+    def minorAxis(self):
+        return self.a*np.sqrt(1-self.e**2)
+    
+    def E2theta(self,E) :
+        return 2*np.atan(np.sqrt((1+self.e)/(1-self.e))*np.tan(E/2))
+    
+    def theta2E(self, theta) :
+        return 2*np.atan(np.sqrt((1-self.e)/(1+self.e))*np.tan(theta/2))
+    
+    def theta2Length(self, theta) :
+        return self.a*(1-self.e**2)/(1+self.e*np.cos(theta))
+    
+    def theta2Coor2D(self, theta) :
+        return self.origin+self.theta2Length(theta)*np.array([[np.cos(self.theta0+theta)],[np.sin(self.theta0+theta)]])
+    
+    def theta2Point2D(self, theta):
+        return Point2D(self.plane, self.theta2Coor2D(theta))
+    
+    def theta2Line2D(self, theta) :
+        return Line2D(self.plane, self.origin, self.theta2Length(theta), theta)
+    
+    def draw(self,dash=None) :
+        self.undraw()
+        centre = self.origin-self.a*self.e*np.array([[np.cos(self.theta0)],[np.sin(self.theta0)]])
+        theta = np.linspace(0, 2*np.pi,num=self.part)
+        ellipse = np.stack((self.a*np.cos(theta),self.minorAxis()*np.sin(theta)),axis=0)
+        rotation = np.matrix([[np.cos(self.theta0),-np.sin(self.theta0)],[np.sin(self.theta0),np.cos(self.theta0)]])
+        poly = centre @ np.ones(1,self.part) + rotation @ ellipse
+        poly = self.plane.screenPosition(poly)
+        poly = np.ravel(poly, order='F')
+        self.ID = CANVAS.create_arc(poly, dash=dash)
+        
     
 class Rectangle(GeometricObject2D) :
     def __init__(self, plane, origin, theta, length, height) :
