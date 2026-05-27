@@ -83,6 +83,7 @@ def export(chemin) :
     capture = Image.open(chemin+".ps")
     capture.save(chemin+".png")
     WINDOW.title("geometry 3D")
+    WINDOW.after(1, lambda:WINDOW.destroy())
     WINDOW.mainloop()  
 
 def screenProjection(point) :

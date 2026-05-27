@@ -336,4 +336,5 @@ def export(chemin) :
     zone.postscript(file=chemin+".ps",pageheight=HEIGHT,pagewidth=WIDTH,colormode='color')
     capture = Image.open(chemin+".ps")
     capture.save(chemin+".png")
+    fenetre.after(1, lambda: fenetre.destroy())
     fenetre.mainloop()    
