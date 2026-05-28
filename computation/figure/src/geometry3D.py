@@ -627,10 +627,11 @@ class Ellipse2D(GeometricObject2D) :
         theta = np.linspace(theta0, theta1, num=self.part)
         ellipse = np.stack((self.a*np.cos(theta),self.minorAxis()*np.sin(theta)),axis=0)
         rotation = np.matrix([[np.cos(self.theta0),-np.sin(self.theta0)],[np.sin(self.theta0),np.cos(self.theta0)]])
-        poly = centre @ np.ones(1,self.part) + rotation @ ellipse
+        poly = centre @ np.ones((1,self.part)) + rotation @ ellipse
         poly = self.plane.screenPosition(poly)
         poly = np.ravel(poly, order='F')
-        self.ID = CANVAS.create_arc(poly, dash=dash)
+        print(poly)
+        self.ID = CANVAS.create_line(poly.tolist(), dash=dash)
     
     def copy(self):
         return Ellipse2D(self.plane, self.origin, self.a, self.e, self.theta0)
