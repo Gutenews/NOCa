@@ -592,7 +592,7 @@ class Arrow2D(GeometricObject2D) :
         line = np.ravel(line, order='F')
         self.ID = CANVAS.create_line(line.tolist())
 
-class Ellipse(GeometricObject2D) :
+class Ellipse2D(GeometricObject2D) :
     def __init__(self, plane, origin, a, e, theta0, part=20) :
         super().__init__(plane, origin)
         self.a = a
@@ -621,17 +621,19 @@ class Ellipse(GeometricObject2D) :
     def theta2Line2D(self, theta) :
         return Line2D(self.plane, self.origin, self.theta2Length(theta), theta)
     
-    def draw(self,dash=None) :
+    def draw(self,theta0=0., theta1= 2*np.pi, dash=None) :
         self.undraw()
         centre = self.origin-self.a*self.e*np.array([[np.cos(self.theta0)],[np.sin(self.theta0)]])
-        theta = np.linspace(0, 2*np.pi,num=self.part)
+        theta = np.linspace(theta0, theta1, num=self.part)
         ellipse = np.stack((self.a*np.cos(theta),self.minorAxis()*np.sin(theta)),axis=0)
         rotation = np.matrix([[np.cos(self.theta0),-np.sin(self.theta0)],[np.sin(self.theta0),np.cos(self.theta0)]])
         poly = centre @ np.ones(1,self.part) + rotation @ ellipse
         poly = self.plane.screenPosition(poly)
         poly = np.ravel(poly, order='F')
         self.ID = CANVAS.create_arc(poly, dash=dash)
-        
+    
+    def copy(self):
+        return Ellipse2D(self.plane, self.origin, self.a, self.e, self.theta0)
     
 class Rectangle(GeometricObject2D) :
     def __init__(self, plane, origin, theta, length, height) :
