@@ -51,7 +51,7 @@ Ainsi on peut voir que le satellite reste toujours dans le même plan (noté $st
 - $i$, l'inclinaison de ce plan
 
 \clearpage
-\subsection{demi-grand axe, excentricité et anomalie vraie}
+\subsection{Demi-grand axe, excentricité et anomalie vraie}
 
 Nous allons désormais nous pencher sur le mouvement du satellite dans le plan décrit précédemment. Pour cela, nous allons utiliser un repère polaire dans ce plan. $\overrightarrow r$, $\frac{d\overrightarrow r}{dt}$, et (\ref{eq:1.1}) deviennent alors :
 \begin{align*}
@@ -87,7 +87,32 @@ On peut effectuer une rotation du repère tel que $\theta_0 = 0$ et ainsi
 \boxed{r(\theta)=\frac{C^2/\mu}{1+e\cos\theta}}\label{eq:1.3}
 \end{equation}
 
-On reconnaît alors l'équation polaire d'une ellipse avec $p=C^2/\mu$, avec l'astre orbité occupant le foyer autour duquel l'équation est défini. On a alors deux nouveaux paramètres pour définir l'orbite son excentricité $e$ et son demi-grand-axe $a$ pour pouvoir ainsi décrire l'ellipse. Ainsi qu'un troisième pour décrire la position du satellite $\theta$ qui est donc l'anomalie vraie.
+On reconnaît alors l'équation polaire d'une ellipse avec $p=C^2/\mu$, avec l'astre orbité occupant le foyer autour duquel l'équation est définie. On a alors deux nouveaux paramètres pour définir l'orbite son excentricité $e$ et son demi-grand-axe $a$ pour pouvoir ainsi décrire l'ellipse. Ainsi qu'un troisième pour décrire la position du satellite $\theta$ qui est donc l'anomalie vraie.
+
+\subsection{Argument du périastre}
+
+\begin{wrapfigure}[20]{r}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{1_1_2.png}
+\includegraphics[width=0.9\linewidth]{1_1_3.png}
+\caption{argument du périastre dans le plan et l'espace}
+\end{wrapfigure}
+
+Maintenant que nous savons que le satellite a pour trajectoire une ellipse. Il faut désormais positionner cette dernière dans le plan dans lequel le satellite. Pour cela, on définit le périastre, le point de l'orbite où le satellite est le plus proche de l'astre orbité, il est dénoté $Pe$ sur les schémas ci-contre. Il correspond à $\theta=0$ dans l'équation polaire de l'ellipse.
+
+On peut alors repérer le Périastre et par conséquent l'ellipse par rapport au nœud ascendant avec l'angle formé par la droite entre l'astre orbité et le nœud ascendant et celle entre l'astre orbité et le périastre. On appelle cet angle, argument du périastre (noté $\omega$).
+
+\subsection{Synthèse}
+
+On a alors 6 paramètres orbitaux.\\\\
+2 pour décrire le plan dans lequel se déplace le satellite :\\
+\indent- $\Omega$, la longitude du nœud ascendant\\
+\indent- $i$, l'inclinaison\\\\
+3 pour décrire la trajectoire du satellite dans ce plan :\\
+\indent- $a$, la longueur du demi-grand-axe\\
+\indent- $e$, l'excentricité\\
+\indent- $\omega$, l'argument du périastre\\\\
+1 pour décrire sa position sur l'orbite :\\
+\indent- $\theta$, l'anomalie vraie
 
 \chapter*{Annexes géométriques}
 
