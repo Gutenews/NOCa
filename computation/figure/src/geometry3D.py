@@ -619,7 +619,7 @@ class Ellipse2D(GeometricObject2D) :
         return Point2D(self.plane, self.theta2Coor2D(theta))
     
     def theta2Line2D(self, theta) :
-        return Line2D(self.plane, self.origin, self.theta2Length(theta), theta)
+        return Line2D(self.plane, self.origin, self.theta2Length(theta), theta+self.theta0)
     
     def draw(self,theta0=0., theta1= 2*np.pi, dash=None) :
         self.undraw()
