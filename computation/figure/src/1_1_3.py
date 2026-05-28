@@ -59,6 +59,8 @@ Ped.draw()
 Ped.label("Pe",xoff=-8)
 RANd=gm3D.Line2D(plan2, gm3D.O2D, l, 0.)
 RANd.draw((5,5))
+DNd =gm3D.Line2D(plan2, gm3D.O2D, 45., pi) 
+DNd.draw((5,5))
 arc = RANd.angle2D(Ped)
 arc.radius=l-5
 arc.draw()
