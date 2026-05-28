@@ -114,7 +114,7 @@ arc2=vecx.angle2D(projcd)
 arc2.radius=15.
 arc2.draw()
 arc2.style('V')
-arc2.label("\u038F-\u03C0",xoff=-12,yoff=-5) #Omega-pi
+arc2.label("\u038F-\u03C0/2",xoff=-15,yoff=-5) #Omega-pi
 arc2.children[0].radius=2.
 arc2.children[0].draw()
 
