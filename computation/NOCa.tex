@@ -154,7 +154,7 @@ e_m&=\frac{1}{2}\left(0^2+\left(\frac{C}{r_{pe}}\right)^2\right)-\frac{\mu}{r_{p
 \end{align*}
 
 \begin{equation}
-\boxed{C=\sqrt{\mu a(1-e^2)}\label{eq:C}}
+\boxed{C=\sqrt{\mu a(1-e^2)}\label{eq:Ca}}
 \end{equation}
 \begin{equation}
 \boxed{e=\sqrt{1-\frac{C^2}{\mu a}}\label{eq:e}}
@@ -200,6 +200,16 @@ rC\sin i\cos(\theta+\omega)&=r^2\left(\overrightarrow{e_z}\cdot\frac{d\overright
 \end{align*}
 
 Ainsi nous pouvons utiliser l'arc moitié comme pour $\theta$ pour calculer \\$\theta+\omega$ à l'aide de (\ref{eq:sintheta+omega}) et de (\ref{eq:costheta+omega}) mais comme précédemment NOCa utilise la fonction \verb|arctan2| pour éviter des problèmes lorsque le satellite se situe à son nœud ascendant. On peut aussi remarquer une division par $0$ lorsque $i=0$, mais dans ce cas, la notion de nœud ascendant et donc d'argument du périastre perd tout son sens puisque la trajectoire du satellite se situe dans le plan équatorial.
+
+\subsection{Synthèse}
+
+On peut calculer les paramètres orbitaux à partir du vecteur et du vecteur vitesse.\\
+- $\Omega$, en représentant $\overrightarrow C$ calculé avec (\ref{eq:C}) dans le système de coordonnées sphérique\\
+- $i$, de même\\
+- $a$, en calculant $e_m$ et en utilisant (\ref{eq:e_m})\\
+- $e$, en utilisant $C$, et $a$ calculés précédemment avec (\ref{eq:e})\\
+- $\theta$, en utilisant l'arc moitié avec $C$, $a$, et $e$ calculés auparavant (\ref{eq:tantheta/2})\\
+- $\omega$, en utilisant l'arc moitié avec $C$, $i$, et $\theta$ calculés au préalable (\ref{eq:costheta+omega}), (\ref{eq:sintheta+omega})
 
 \chapter*{Annexes géométriques}
 
