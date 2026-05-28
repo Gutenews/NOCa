@@ -630,7 +630,6 @@ class Ellipse2D(GeometricObject2D) :
         poly = centre @ np.ones((1,self.part)) + rotation @ ellipse
         poly = self.plane.screenPosition(poly)
         poly = np.ravel(poly, order='F')
-        print(poly)
         self.ID = CANVAS.create_line(poly.tolist(), dash=dash)
     
     def copy(self):
