@@ -172,11 +172,34 @@ r(\theta)&=\frac{a(1-e^2)}{1+e\cos\theta}&\dot r(\theta)&=C\frac{e\sin\theta}{a(
 \end{align*}
 \begin{align*}
 \tan\left(\frac{\theta}{2}\right)&=\frac{a(1-e^2)}{C}\dot r\frac{1}{\frac{a(1-e^2)}{r}-(1-e)}\\
-\Aboxed{\tan\left(\frac{\theta}{2}\right)&=\frac{a(1+e)}{C}\frac{r\dot r}{a(1+e)-r}}
+\Aboxed{\tan\left(\frac{\theta}{2}\right)&=\frac{r\dot r}{C}\frac{a(1+e)}{a(1+e)-r}}
 \stepcounter{equation}\tag{\theequation}\label{eq:tantheta/2}
 \end{align*}
 
-Pour que cette équation soit toujours utile ($\theta =\pi$), il faut prolonger par continuité $\arctan$. Dans le contexte de NOCa, la fonction numpy \verb|arctan2| qui prend en entrée les valeurs de $\sin\theta$, et de $\cos\theta$ qu'on obtient à l'aide des deux équations encadrées ci-dessus.
+Pour que cette équation soit toujours utile ($\theta =\pi$), il faut prolonger par continuité $\arctan$. Dans le contexte de NOCa, on utilise la fonction numpy \verb|arctan2| (qui fonctionne même pour $\theta=\pi$) qui prend en entrée les valeurs de $\sin\theta$, et de $\cos\theta$ qu'on obtient à l'aide des deux équations encadrées ci-dessus.
+
+\subsection{Argument du périastre}
+
+Pour calculer l'argument du périastre $\omega$, nous allons d'abord  calculer $\theta+\omega$. On définit d'abord un vecteur qui colinéaire à celui reliant l'origine au nœud ascendant, $\overrightarrow{RAN}$.
+\begin{align*}
+\overrightarrow{RAN}&=\overrightarrow{e_z}\wedge\overrightarrow C\\
+\overrightarrow{RAN}\wedge\overrightarrow r&=r\left\|\overrightarrow{RAN}\right\|\sin(\theta+\omega)\frac{\overrightarrow C}{C}\\
+rC\sin i\sin(\theta+\omega)\frac{\overrightarrow C}{C}&=\left(\overrightarrow{e_z}\wedge\overrightarrow C\right)\wedge\overrightarrow r\\
+r\sin i\sin(\theta+\omega)\overrightarrow C
+&=\left(\overrightarrow r\cdot\overrightarrow{e_z}\right)\overrightarrow C-\left(\overrightarrow r\cdot\overrightarrow C\right)\overrightarrow{e_z}\\
+\Aboxed{\sin(\theta+\omega)&=\frac{\overrightarrow r\cdot\overrightarrow{e_z}}{r\sin i}}
+\stepcounter{equation}\tag{\theequation}\label{eq:costheta+omega}\\
+\overrightarrow{RAN}\cdot\overrightarrow r&=r\left\|\overrightarrow{RAN}\right\|\cos(\theta+\omega)\\
+\left(\overrightarrow{e_z}\wedge\left(\overrightarrow r\wedge\frac{d\overrightarrow r}{dt}\right)\right)\cdot\overrightarrow r&=
+rC\sin i\cos(\theta+\omega)\\
+rC\sin i\cos(\theta+\omega)&=r^2\left(\overrightarrow{e_z}\cdot\frac{d\overrightarrow r}{dt}\right)
+-\left(\overrightarrow{e_z}\cdot\overrightarrow r\right)\left(\overrightarrow r\cdot\frac{d\overrightarrow r}{dt}\right)\\
+\Aboxed{\cos(\theta+\omega)
+&=\frac{1}{C\sin i}\left(r\left(\overrightarrow{e_z}\cdot\frac{d\overrightarrow r}{dt}\right)-\dot r\left(\overrightarrow{e_z}\cdot\overrightarrow r\right)\right)}
+\stepcounter{equation}\tag{\theequation}\label{eq:sintheta+omega}
+\end{align*}
+
+Ainsi nous pouvons utiliser l'arc moitié comme pour $\theta$ pour calculer \\$\theta+\omega$ à l'aide de (\ref{eq:sintheta+omega}) et de (\ref{eq:costheta+omega}) mais comme précédemment NOCa utilise la fonction \verb|arctan2| pour éviter des problèmes lorsque le satellite se situe à son nœud ascendant. On peut aussi remarquer une division par $0$ lorsque $i=0$, mais dans ce cas, la notion de nœud ascendant et donc d'argument du périastre perd tout son sens puisque la trajectoire du satellite se situe dans le plan équatorial.
 
 \chapter*{Annexes géométriques}
 
