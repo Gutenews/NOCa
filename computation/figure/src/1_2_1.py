@@ -8,7 +8,7 @@ import geometry3D as gm3D
 from numpy import pi
 from numpy import array
 
-gm3D.configure(height=90,width=110,scale=5,fontsize=32,phi=pi+pi/8,delta=-pi/6)
+gm3D.configure(height=70,width=90,scale=6,fontsize=32,phi=pi+pi/8,delta=-pi/6)
 
 plandefault = gm3D.Plane(gm3D.O3D, -pi/2, pi/2, 0.)
 plan2 = gm3D.Plane(gm3D.O3D, -pi/3, pi/6, 0.)
@@ -89,7 +89,7 @@ l.draw((5,5))
 lRAN = gm3D.Angle2D(plandefault, gm3D.O2D, 0., l.theta)
 lRAN.draw()
 lRAN.style('V')
-lRAN.label("\u038F",xoff=-2,yoff=-7) #Omega majuscule
+lRAN.label("\u038F",xoff=-2,yoff=-5) #Omega majuscule
 
 norm0 = gm3D.Line2D(plandefault, ran0.origin, 10., l.theta+pi/2)
 norm0.draw((5,5))
