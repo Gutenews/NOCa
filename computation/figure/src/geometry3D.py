@@ -296,7 +296,7 @@ class Angle3D(GeometricObject3D):
         if style =='V':
             mat = positionMatrix(self.phi,self.delta)
             n=np.array([[np.cos(self.delta)*np.cos(self.phi)],[np.cos(self.delta)*np.sin(self.phi)],[np.sin(self.delta)]])
-            t1=np.dot(mat, np.array([[np.cos(self.omega0+self.domega+np.pi/2)],[np.sin(self.omega0+self.domega+np.pi/2)]]))
+            t1=np.dot(mat, np.array([[np.cos(self.omega0+self.domega+(2*(self.domega>0)-1)*np.pi/2)],[np.sin(self.omega0+self.domega+(2*(self.domega>0)-1)*np.pi/2)]]))
             r1=np.linalg.cross(t1, n,axis=0)
             omega1=np.atan2((np.dot(np.array([0.,0.,1.]),n)).item(),(np.dot(np.array([0.,0.,1.]),r1)).item())
             _,phi1,delta1=cartesian2Spherical(t1)
@@ -306,7 +306,7 @@ class Angle3D(GeometricObject3D):
         elif style=='D':
             mat = positionMatrix(self.phi,self.delta)
             n=np.array([[np.cos(self.delta)*np.cos(self.phi)],[np.cos(self.delta)*np.sin(self.phi)],[np.sin(self.delta)]])
-            t1=np.dot(mat, np.array([[np.cos(self.omega0+self.domega+np.pi/2)],[np.sin(self.omega0+self.domega+np.pi/2)]]))
+            t1=np.dot(mat, np.array([[np.cos(self.omega0+self.domega+(2*(self.domega>0)-1)*np.pi/2)],[np.sin(self.omega0+self.domega+(2*(self.domega>0)-1)*np.pi/2)]]))
             r1=np.linalg.cross(t1, n,axis=0)
             omega1=np.atan2((np.dot(np.array([0.,0.,1.]),n)).item(),(np.dot(np.array([0.,0.,1.]),r1)).item())
             _,phi1,delta1=cartesian2Spherical(t1)
@@ -314,7 +314,7 @@ class Angle3D(GeometricObject3D):
             arw1.draw()
             self.children.append(arw1)
 
-            t2=np.dot(mat, np.array([[np.cos(self.omega0-np.pi/2)],[np.sin(self.omega0-np.pi/2)]]))
+            t2=np.dot(mat, np.array([[np.cos(self.omega0-(2*(self.domega>0)-1)*np.pi/2)],[np.sin(self.omega0-(2*(self.domega>0)-1)*np.pi/2)]]))
             r2=np.linalg.cross(t2, n,axis=0)
             omega2=np.atan2((np.dot(np.array([0.,0.,1.]),n)).item(),(np.dot(np.array([0.,0.,1.]),r2)).item())
             _,phi2,delta2=cartesian2Spherical(t2)
@@ -564,15 +564,15 @@ class Angle2D(GeometricObject2D) :
             e.undraw()
             self.children.remove(e)
         if style=='V':
-            arw1 = Arrow2D(self.plane,self.endCoor2D(),self.theta0+self.dtheta+np.pi/2)
+            arw1 = Arrow2D(self.plane,self.endCoor2D(),self.theta0+self.dtheta+(2*(self.dtheta>0)-1)*np.pi/2)
             arw1.draw()
             self.children.append(arw1)
         
         elif style=='D' :
-            arw1 = Arrow2D(self.plane,self.endCoor2D(),self.theta0+self.dtheta+np.pi/2)
+            arw1 = Arrow2D(self.plane,self.endCoor2D(),self.theta0+self.dtheta+(2*(self.dtheta>0)-1)*np.pi/2)
             arw1.draw()
             self.children.append(arw1)
-            arw2 = Arrow2D(self.plane,self.endCoor2D(),self.theta0-np.pi/2)
+            arw2 = Arrow2D(self.plane,self.endCoor2D(),self.theta0-(2*(self.dtheta>0)-1)*np.pi/2)
             arw2.draw()
             self.children.append(arw2)
 
