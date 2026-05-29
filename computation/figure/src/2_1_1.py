@@ -14,25 +14,15 @@ r=el.ligne(1.)
 r.style('V')
 r.label("r",xoff=-3)
 
-RANd=el.ligne(-pi/3)
-RANd.pointille((5,5))
-RAN = RANd.extremite()
-eqd=el.ligne(RANd.theta+pi)
-eqd.pointille((5,5))
-eqd.label("eq",xoff=-8,yoff=-8)
-RAN.delete()
-RAN.label("RAN",xoff=-13,yoff=-6)
+Ped=el.ligne(0.)
+Ped.pointille((5,5))
+Pe = Ped.extremite()
+Pe.delete()
+Pe.label("Pe",xoff=1,yoff=-4)
 
-arg=RANd.angle(r,10.)
+arg=Ped.angle(r,10.)
 arg.style('V')
-arg.label("\u03C9+\u03B8",yoff=-3) #omega minuscule + theta minuscule
-
-eRAN=gm.ligne(RAN.x, RAN.y, RANd.theta, 10.)
-eRAN.style('V')
-eRAN.label("e_RAN",yoff=-10)
-ei=gm.ligne(RAN.x, RAN.y, RANd.theta+pi/2, 10.)
-ei.style('V')
-ei.label("e_i",xoff=7)
+arg.label("\u03B8",yoff=-2) #theta minuscule
 
 prograde=el.tangente(r.theta, 10.)
 prograde.style('V')
