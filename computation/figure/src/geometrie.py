@@ -323,6 +323,12 @@ class ellipse :
         y = x0*np.sin(self.theta)+y0*np.cos(self.theta)
         centre.translate(x, y)
         return centre
+    
+    def tangente(self,theta, d) :
+        temp = np.atan2(self.e+np.cos(theta),-np.sin(theta))
+        point = self.point(theta)
+        point.delete()
+        return ligne(point.x, point.y, temp+self.theta, d)
         
 def affichage() :    
     zone.pack()
