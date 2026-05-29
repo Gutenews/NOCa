@@ -260,7 +260,7 @@ Ainsi en regroupant ces quatre équations, nous pouvons calculer le vecteur posi
 
 \subsection{Anomalie vraie en fonction du temps}
 
-Pour calculer l'anomalie vraie en fonction du temps, nous allons passer par une fonction auxiliaire qui a une dérivée temporelle constante. On remarque que $\overrightarrow r(\theta)$ ainsi que $\frac{d\overrightarrow r}{dt}(\theta)$ sont $2\pi$-périodique donc cette fonction devrait aussi être périodique. On définit alors $f(\theta)$ tel que (avec $T$ la période de l'orbite) :
+Pour calculer l'anomalie vraie en fonction du temps, nous allons passer par une fonction auxiliaire qui a une dérivée temporelle constante. On remarque que $\overrightarrow r(\theta)$ ainsi que $\frac{d\overrightarrow r}{dt}(\theta)$ sont $2\pi$-périodique donc cette fonction devrait aussi être périodique. On se place dans un repère temporel tel que $\theta(t=0)=0$ On définit alors $f(\theta)$ tel que (avec $T$ la période de l'orbite)  :
 \begin{align*}
 \frac{dM}{dt}&=\frac{2\pi}{T}&\tan\left(\frac{\theta}{2}\right)&=\sqrt{\frac{1+e}{1-e}}\tan\left(\frac{E}{2}\right)\tag{\ref{eq:AthetaE}}\\
 &=\frac{d\theta}{dt}\frac{dM}{d\theta}&\frac{d\theta}{1+\cos\theta}&=\sqrt{\frac{1+e}{1-e}}\frac{dE}{1+\cos E}\\
@@ -269,21 +269,28 @@ Pour calculer l'anomalie vraie en fonction du temps, nous allons passer par une 
 &=\frac{2\pi}{CT}ra(1-e\cos E)\tag{\ref{eq:Arx}), (\ref{eq:ArE}}&\frac{rd\theta}{a}&=\sqrt{1-e^2}dE\\
 \frac{dM}{dE}\frac{dE}{d\theta}&=\frac{2\pi}{T}\sqrt{\frac{a}{\mu}}\frac{r(1-e\cos E)}{\sqrt{1-e^2}}\tag{\ref{eq:Ca}}
 &\frac{dE}{d\theta}&=\frac{r}{a\sqrt{1-e^2}}\\
-\frac{dM}{dE}&=\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}(1-e\cos E)&E(t=T)&=E_0+2\pi\\
-M&=\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}(E-e\sin E)&E(t=0)&=E_0
+\frac{dM}{dE}&=\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}(1-e\cos E)&E(t=T)&=2\pi\\
+M&=\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}(E-e\sin E)&E(t=0)&=0
 \end{align*}
 \begin{align*}
 M(t=T)-M(t=0)&=2\pi\\
-M(E=E_0+2\pi)-M(E=E_0)&=2\pi\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}
+M(E=2\pi)-M(E=0)&=2\pi\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}
 \end{align*}
 \begin{equation}\boxed{T=2\pi\sqrt\frac{a^3}{\mu}}\label{eq:T}\end{equation}
-\begin{equation}\boxed{M=E-e\sin E}\label{eq:M}\end{equation}
+\begin{equation}\boxed{M=E-e\sin E=M_0+2\pi\frac{t}{T}}\label{eq:M}\end{equation}
 
 On appelle cette fonction auxiliaire l'anomalie moyenne. Pour obtenir $\theta$, il faut résoudre numériquement cette équation, ce qui est fait à l'aide de \verb|fast_kepler| qui permet de calculer $E$ et de (\ref{eq:AthetaE}). Ainsi nous avons une expression de $\theta$ en fonction du temps.
+
+\subsection{Synthèse}
+
+Les paramètres orbitaux permettent de calculer la position et la vitesse du satellite à n'importe quel instant $t$. Pour cela, il faut :\\
+- $M$, calculé à l'aide de (\ref{eq:M})\\
+- $\theta$, obtenu numériquement à l'aide de $M$ et de (\ref{eq:AthetaE})\\
+- vecteur vitesse et vecteur position, à l'aide de (\ref{eq:rpointtheta}) et (\ref{eq:rtheta})
+
 \chapter*{Annexes géométriques}
 
 \section*{L'Ellipse}
-
 
 \begin{wrapfigure}{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A1_1.png}
