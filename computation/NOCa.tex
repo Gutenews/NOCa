@@ -188,7 +188,7 @@ rC\sin i\sin(\theta+\omega)\frac{\overrightarrow C}{C}&=\left(\overrightarrow{e_
 r\sin i\sin(\theta+\omega)\overrightarrow C
 &=\left(\overrightarrow r\cdot\overrightarrow{e_z}\right)\overrightarrow C-\left(\overrightarrow r\cdot\overrightarrow C\right)\overrightarrow{e_z}\\
 \Aboxed{\sin(\theta+\omega)&=\frac{\overrightarrow r\cdot\overrightarrow{e_z}}{r\sin i}}
-\stepcounter{equation}\tag{\theequation}\label{eq:costheta+omega}\\
+\stepcounter{equation}\tag{\theequation}\label{eq:sintheta+omega}\\
 \overrightarrow{RAN}\cdot\overrightarrow r&=r\left\|\overrightarrow{RAN}\right\|\cos(\theta+\omega)\\
 \left(\overrightarrow{e_z}\wedge\left(\overrightarrow r\wedge\frac{d\overrightarrow r}{dt}\right)\right)\cdot\overrightarrow r&=
 rC\sin i\cos(\theta+\omega)\\
@@ -196,7 +196,7 @@ rC\sin i\cos(\theta+\omega)&=r^2\left(\overrightarrow{e_z}\cdot\frac{d\overright
 -\left(\overrightarrow{e_z}\cdot\overrightarrow r\right)\left(\overrightarrow r\cdot\frac{d\overrightarrow r}{dt}\right)\\
 \Aboxed{\cos(\theta+\omega)
 &=\frac{1}{C\sin i}\left(r\left(\overrightarrow{e_z}\cdot\frac{d\overrightarrow r}{dt}\right)-\dot r\left(\overrightarrow{e_z}\cdot\overrightarrow r\right)\right)}
-\stepcounter{equation}\tag{\theequation}\label{eq:sintheta+omega}
+\stepcounter{equation}\tag{\theequation}\label{eq:costheta+omega}
 \end{align*}
 
 Ainsi nous pouvons utiliser l'arc moitié comme pour $\theta$ pour calculer \\$\theta+\omega$ à l'aide de (\ref{eq:sintheta+omega}) et de (\ref{eq:costheta+omega}) mais comme précédemment NOCa utilise la fonction \verb|arctan2| pour éviter des problèmes lorsque le satellite se situe à son nœud ascendant. On peut aussi remarquer une division par $0$ lorsque $i=0$, mais dans ce cas, la notion de nœud ascendant et donc d'argument du périastre perd tout son sens puisque la trajectoire du satellite se situe dans le plan équatorial.
@@ -209,8 +209,77 @@ On peut calculer les paramètres orbitaux à partir du vecteur et du vecteur vit
 - $a$, en calculant $e_m$ et en utilisant (\ref{eq:e_m})\\
 - $e$, en utilisant $C$, et $a$ calculés précédemment avec (\ref{eq:e})\\
 - $\theta$, en utilisant l'arc moitié avec $C$, $a$, et $e$ calculés auparavant (\ref{eq:tantheta/2})\\
-- $\omega$, en utilisant l'arc moitié avec $C$, $i$, et $\theta$ calculés au préalable (\ref{eq:costheta+omega}), (\ref{eq:sintheta+omega})
+- $\omega$, en utilisant l'arc moitié avec $C$, $i$, et $\theta$ calculés au préalable (\ref{eq:sintheta+omega}), (\ref{eq:costheta+omega})
 
+\section{Utilisation des paramètres orbitaux}
+
+Dans la section précédente, nous avons calculé les paramètres orbitaux en fonction du vecteur position et du vecteur vitesse. Ici, l'objectif sera de calculer ces deux vecteurs en fonctions des paramètres orbitaux et ainsi que par rapport au temps. On remarque que seule l'anomalie change en fonction du temps. Ainsi calculer les vecteurs en fonctions de l'anomalie vraie et en suite calculer l'anomalie vraie en fonction du temps semble être une bonne approche.
+
+\subsection{Position et vitesse en fonction de l'anomalie vraie}
+
+\begin{wrapfigure}[19]{r}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{1_3_1.png}
+\includegraphics[width=0.9\linewidth]{1_3_2.png}
+\caption{repère transitoire dans le plan et l'espace}
+\end{wrapfigure}
+
+Grâce à (\ref{eq:Artheta}), Nous avons déjà une expression de la norme du vecteur position en fonction de $\theta$. Il suffit désormais d'avoir ses projections sur les différents axes du repère.\\
+Pour cela, on définit un repère transitoire avec $\overrightarrow{e_{RAN}}$, et $\overrightarrow{e_i}$ définit par les schémas ci-contre. Ainsi, nous avons :
+
+\begin{align*}
+\overrightarrow{e_{RAN}}&=\cos\Omega\overrightarrow{e_x}+\sin\Omega\overrightarrow{e_y}\\
+\overrightarrow{e_i}&=-\cos i\sin\Omega\overrightarrow{e_x}+\cos i\cos\Omega\overrightarrow{e_y}+\sin i\overrightarrow{e_z}\\
+\overrightarrow{e_r}&=\cos(\theta+\omega)\overrightarrow{e_{RAN}}+\sin(\theta+\omega)\overrightarrow{e_i}\\
+\overrightarrow{e_\theta}&=-\sin(\theta+\omega)\overrightarrow{e_{RAN}}+\cos(\theta+\omega)\overrightarrow{e_i}
+\end{align*}
+
+\begin{equation}\boxed{
+\overrightarrow{e_r}=\begin{pmatrix}
+\cos(\theta+\omega)\cos\Omega-\sin(\theta+\omega)\cos i\sin\Omega\\
+\cos(\theta+\omega)\sin\Omega+\cos(\theta+\omega)\cos i\sin\Omega\\
+\sin(\theta+\omega)\sin i\end{pmatrix}}\label{eq:er}
+\end{equation}
+\\\\
+\begin{equation}\boxed{
+\overrightarrow{e_\theta}=\begin{pmatrix}
+-\sin(\theta+\omega)\cos\Omega-\cos(\theta+\omega)\cos i\sin\Omega \\
+-\sin(\theta+\omega)\sin\Omega+\cos(\theta+\omega)\cos i\cos\Omega\\
+\cos(\theta+\omega)\sin i\end{pmatrix}}\label{eq:e_theta}
+\end{equation}
+
+On voit qu'on vérifie bien (\ref{eq:sintheta+omega}), avec cette nouvelle expression de $\overrightarrow{e_r}$
+
+\begin{align*}
+\frac{d\overrightarrow r}{dt}&=\dot r\overrightarrow{e_r}+r\dot\theta\overrightarrow{e_\theta}&
+\Aboxed{\overrightarrow r&=r\overrightarrow{e_r}}\stepcounter{equation}\tag{\theequation}\label{eq:rtheta}\\
+\Aboxed{\frac{d\overrightarrow r}{dt}&=\dot r\overrightarrow{e_r}+\frac{C}{r}\overrightarrow{e_\theta}}
+\stepcounter{equation}\tag{\theequation}\label{eq:rpointtheta}\\
+\end{align*}
+
+Ainsi en regroupant ces quatre équations, nous pouvons calculer le vecteur position et le vecteur vitesse en fonction de l'anomalie vraie.
+
+\subsection{Anomalie vraie en fonction du temps}
+
+Pour calculer l'anomalie vraie en fonction du temps, nous allons passer par une fonction auxiliaire qui a une dérivée temporelle constante. On remarque que $\overrightarrow r(\theta)$ ainsi que $\frac{d\overrightarrow r}{dt}(\theta)$ sont $2\pi$-périodique donc cette fonction devrait aussi être périodique. On définit alors $f(\theta)$ tel que (avec $T$ la période de l'orbite) :
+\begin{align*}
+\frac{dM}{dt}&=\frac{2\pi}{T}&\tan\left(\frac{\theta}{2}\right)&=\sqrt{\frac{1+e}{1-e}}\tan\left(\frac{E}{2}\right)\tag{\ref{eq:AthetaE}}\\
+&=\frac{d\theta}{dt}\frac{dM}{d\theta}&\frac{d\theta}{1+\cos\theta}&=\sqrt{\frac{1+e}{1-e}}\frac{dE}{1+\cos E}\\
+&=\frac{C}{r^2}\frac{dM}{d\theta}&\frac{rd\theta}{r+a\cos E-ae}&=\sqrt{\frac{1+e}{1-e}}\frac{dE}{1+\cos E}\\
+\frac{dM}{d\theta}&=\frac{2\pi}{CT}r^2&\frac{rd\theta}{a(1-e)(1+\cos E)}&=\sqrt{\frac{1+e}{1-e}}\frac{dE}{1+\cos E}\tag{\ref{eq:Arx}), (\ref{eq:ArE}}\\
+&=\frac{2\pi}{CT}ra(1-e\cos E)\tag{\ref{eq:Arx}), (\ref{eq:ArE}}&\frac{rd\theta}{a}&=\sqrt{1-e^2}dE\\
+\frac{dM}{dE}\frac{dE}{d\theta}&=\frac{2\pi}{T}\sqrt{\frac{a}{\mu}}\frac{r(1-e\cos E)}{\sqrt{1-e^2}}\tag{\ref{eq:Ca}}
+&\frac{dE}{d\theta}&=\frac{r}{a\sqrt{1-e^2}}\\
+\frac{dM}{dE}&=\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}(1-e\cos E)&E(t=T)&=E_0+2\pi\\
+M&=\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}(E-e\sin E)&E(t=0)&=E_0
+\end{align*}
+\begin{align*}
+M(t=T)-M(t=0)&=2\pi\\
+M(E=E_0+2\pi)-M(E=E_0)&=2\pi\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}
+\end{align*}
+\begin{equation}\boxed{T=2\pi\sqrt\frac{a^3}{\mu}}\label{eq:T}\end{equation}
+\begin{equation}\boxed{M=E-e\sin E}\label{eq:M}\end{equation}
+
+On appelle cette fonction auxiliaire l'anomalie moyenne. Pour obtenir $\theta$, il faut résoudre numériquement cette équation, ce qui est fait à l'aide de \verb|fast_kepler| qui permet de calculer $E$ et de (\ref{eq:AthetaE}). Ainsi nous avons une expression de $\theta$ en fonction du temps.
 \chapter*{Annexes géométriques}
 
 \section*{L'Ellipse}
@@ -251,7 +320,7 @@ r'&=2a-r\\
 (ae+x)^2+y^2&=4a^2-4ar+(x-ae)^2+y^2\\
 (ae)^2+2aex+x^2&=4a^2-4ar+x^2-2aex+(ae)^2\\
 -4a(a-ex) &= -4ar\\
-\Aboxed{r&=a-ex}\tag{A1.2}\\\label{eq:A1.2}
+\Aboxed{r&=a-ex}\tag{A1.2}\label{eq:Arx}\\
 (x-ae)^2+y^2&=a^2-2aex+(ex)^2\\
 x^2-2aex+(ae)^2+y^2-(ex)^2&=a^2-2aex\\
 (1-e^2)x^2+y^2&=(1-e^2)a^2
@@ -278,7 +347,7 @@ On peut se rendre compte que l'équation cartésienne de l'ellipse ressemble bea
 Ainsi avec 
 }
 \begin{equation}
-\label{eq:Artheta}
+\label{eq:ArE}
 \tag{A1.4}
 \boxed{
 \begin{tabular}{c c c}
@@ -308,13 +377,13 @@ On peut alors se placer dans un système de coordonnées polaires pour détermin
 \begin{align*}
 x-ae&=r\cos(\theta)\\
 x&=r\cos(\theta)+ae\\
-r&=a-e(r\cos(\theta)+ae) \tag{A1.2}\\
+r&=a-e(r\cos(\theta)+ae) \tag{\ref{eq:Arx}}\\
 r(1+e\cos(\theta))&=a(1-e^2)\\
 \end{align*}
 
 \begin{equation}
 \tag{A1.5}
-\label{eq:A1.5}
+\label{eq:Artheta}
 \boxed{r=\frac{p}{1+e\cos(\theta)}}
 \end{equation}
 Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent toutes les deux de caractériser un point de l'ellipse, il doit y avoir une fonction permettant de relier l'une à l'autre.
@@ -328,7 +397,7 @@ Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent t
 
 \begin{equation}
 \tag{A1.6}
-\label{eq:A1.6}
+\label{eq:AthetaE}
 \boxed{\tan\left(\frac{\theta}{2}\right)=\sqrt{\frac{1+e}{1-e}}\tan\left(\frac{E}{2}\right)}
 \end{equation}
 
