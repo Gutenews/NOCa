@@ -10,6 +10,9 @@
 
 \graphicspath{{figure/out/}}
 
+\renewcommand{\chaptername}{Chapitre}
+\renewcommand{\appendixname}{Annexe}
+
 \title{Calcul pour NOCa}
 \author{Yannis Benchaib--Langon}
 \date{Mai 2026}
@@ -288,9 +291,11 @@ Les paramètres orbitaux permettent de calculer la position et la vitesse du sat
 - $\theta$, obtenu numériquement à l'aide de $M$ et de (\ref{eq:AthetaE})\\
 - vecteur vitesse et vecteur position, à l'aide de (\ref{eq:rpointtheta}) et (\ref{eq:rtheta})
 
-\chapter*{Annexes géométriques}
+\appendix
 
-\section*{L'Ellipse}
+\chapter{Annexes géométriques}
+
+\section{L'Ellipse}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A1_1.png}
@@ -308,7 +313,7 @@ r + r' = 2a
 Sur la figure ci-contre M appartient à l'ellipse tracée.
 \\	Les deux foyers de l'ellipse sont espacés du distance de $2ae$
 
-\subsection*{Équation cartésienne de l'ellipse}
+\subsection{Équation cartésienne de l'ellipse}
 
 L'ellipse définie comme au-dessus ne permet de la tracer facilement car une équation comme (\ref{eq:A1.1}) est plus qu'implicite. On va alors trouver une forme cartésienne de cette équation.
 
@@ -347,7 +352,7 @@ x^2-2aex+(ae)^2+y^2-(ex)^2&=a^2-2aex\\
 
 où $b=a\sqrt{1-e^2}$ est la longueur du demi petit axe
 
-\subsection*{Anomalie excentrique}
+\subsection{Anomalie excentrique}
 
 On peut se rendre compte que l'équation cartésienne de l'ellipse ressemble beaucoup à celle du cercle et donc l'idée d'utiliser un angle pour caractériser la position d'un point sur l'ellipse semble cohérente.
 
@@ -373,7 +378,7 @@ On peut représenter sur l'ellipse deux cercles, le cercle principal de rayon a 
 \indent Lorsqu'on a $E$, on peut lire sur le cercle principal l'abscisse du point qui y est associé (en l'occurrence $M$) et son ordonnée sur le cercle secondaire.
 
 \clearpage
-\subsection*{Anomalie vraie}
+\subsection{Anomalie vraie}
 
 \begin{wrapfigure}[10]{l}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A1_5.png}
@@ -409,13 +414,13 @@ Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent t
 \end{equation}
 
 \clearpage
-\section*{Coordonnées Polaires}
+\section{Coordonnées Polaires}
 {
-\begin{wrapfigure}[9]{r}{0.4\textwidth}
+\begin{wrapfigure}[10]{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A2_1.png}
 \end{wrapfigure}
 
-\subsection*{Présentation}
+\subsection{Présentation}
 
 Habituellement dans un espace en deux dimensions, on se repère à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, on va présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$), ces deux vecteurs étant unitaires.\\\\
 
@@ -431,7 +436,7 @@ k_r&=1&k_\theta&=r\\
 
 On remarque que \boxed{\overrightarrow{e_r}\cdot\overrightarrow{e_\theta}=0} et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}=\overrightarrow{e_z}$, faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\theta}$) un repère orthonormé direct.
 
-\subsection*{Différenciation}
+\subsection{Différenciation}
 
 Contrairement à $\overrightarrow{e_x}$ et $\overrightarrow{e_y}$ qui sont immobiles, $\overrightarrow{e_r}$ et $\overrightarrow{e_\theta}$ changent en fonction de la position d'où ils sont calculés. Donc ils ne doivent pas être considérés comme des constantes lors des calculs de dérivation et d'intégration.
 \begin{align*}
@@ -458,8 +463,8 @@ $d^2\overrightarrow{r}=\left(d^2-r(d\theta)^2\right)\overrightarrow{e_r}+\left(r
 
 
 \clearpage
-\section*{Coordonnées Sphériques Géographiques}
-\subsection*{Présentation}
+\section{Coordonnées Sphériques Géographiques}
+\subsection{Présentation}
 
 \begin{wrapfigure}{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A3_1.png}
@@ -484,7 +489,7 @@ k_\delta&=r\\
 \clearpage
 On remarque aussi $\overrightarrow{e_r}\cdot\overrightarrow{e_\phi}=\overrightarrow{e_r}\cdot\overrightarrow{e_\delta}=\overrightarrow{e_\phi}\cdot\overrightarrow{e_\delta}=0$ et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\phi}=\overrightarrow{e_\delta}$ faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\phi}$,$\overrightarrow{e_\delta}$) un repère orthonormé direct.
 
-\subsection*{Différenciation}
+\subsection{Différenciation}
 Comme pour le repère polaire, les vecteurs $\overrightarrow{e_r}$, $\overrightarrow{e_\phi}$, et $\overrightarrow{e_\delta}$ ne sont pas immobiles. donc leur différentielle n'est pas forcément nulle.
 
 \begin{align*}
