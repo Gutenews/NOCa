@@ -380,6 +380,20 @@ class Plane(GeometricObject3D) :
         return Line3D(self.origin, length, self.phi, self.delta)
     
     def coorProjection(self, coor) :
+        """
+        Return the point projected orthogonaly on the plane from the coordinates 
+
+        Parameters
+        ----------
+        coor : numpy float array
+            absolute coordinate of the point
+
+        Returns
+        -------
+        Point2D
+            projected point
+        """
+        
         projcoor = np.dot(self.positionmatrix.T,(coor-self.origin))
         return Point2D(self, projcoor)
     
