@@ -20,17 +20,17 @@
 \maketitle
 
 \section*{Introduction}
-Ce document a pour but d'expliquer les calculs qui sont effectués dans la bibliothèque NOCa, aussi bien d'un point de vue physique que géométrique. Ce document présentera aussi les conventions utilisées dans cette bibliothèque. Dans la suite de ce document, on considérera un satellite de masse quelconque $m$ négligeable devant l'astre autour duquel il orbite de paramètre gravitationnel standard $\mu$ placé à l'origine. Le satellite sera alors à la position $\overrightarrow{r}$.
+Ce document a pour but d'expliquer les calculs qui sont effectués dans la bibliothèque NOCa, aussi bien d'un point de vue physique que géométrique. Ce document présentera aussi les conventions utilisées dans cette bibliothèque. Dans la suite de ce document, nous considérerons un satellite de masse quelconque $m$ négligeable devant l'astre autour duquel il orbite de paramètre gravitationnel standard $\mu$ placé à l'origine. Le satellite sera alors à la position $\overrightarrow{r}$.
 
 \chapter{Paramètres orbitaux}
 
 \section{Définitions}
 
-On peut décrire la trajectoire d'un satellite avec des paramètres orbitaux. Avec ces paramètres, on peut déterminer la position et la vitesse d'un satellite.
+Nous pouvons décrire la trajectoire d'un satellite avec des paramètres orbitaux. Avec ces paramètres, nous pouvons déterminer la position et la vitesse d'un satellite.
 
 \subsection{Nœud ascendant}
 
-Avec le théorème du moment cinétique, on a :
+Avec le théorème du moment cinétique, nous avons :
 \begin{align*}
 \frac{d}{dt}\left(\overrightarrow{r}\wedge\frac{d\overrightarrow{r}}{dt}\right)&=\overrightarrow{r}\wedge\left(-\frac{\mu}{r^3}\overrightarrow{r}\right)\\
 &=\overrightarrow{0}
@@ -49,7 +49,7 @@ Avec le théorème du moment cinétique, on a :
 \overrightarrow{r}\cdot\overrightarrow{C}=\overrightarrow{0}
 \end{align*}
 
-Ainsi on peut voir que le satellite reste toujours dans le même plan (noté $st$ dans le schéma ci-contre) lors de sa trajectoire. Pour caractériser ce plan, on utilise deux angles :\\
+Ainsi nous pouvons voir que le satellite reste toujours dans le même plan (noté $st$ dans le schéma ci-contre) lors de sa trajectoire. Pour caractériser ce plan, deux angles sont utilisés :\\
 - $\Omega$, la longitude du nœud ascendant (noté $RAN$), le point où le satellite passe au nord du plan équatorial (noté $eq$ dans le schéma)\\
 - $i$, l'inclinaison de ce plan
 
@@ -70,14 +70,14 @@ e_m&=e_c+e_p&      						e_c&=\frac{1}{2}\left(\frac{d\overrightarrow r}{dt}\rig
 \Aboxed{e_p&=-\frac\mu r}& 					\Aboxed{e_c&=\frac{1}{2}\left(\dot r^2+\frac{C^2}{r^2}\right)}
 \end{align*}
 
-En posant $u=\frac{1}{r}$, On a :
+En posant $u=\frac{1}{r}$, nous avons :
 \begin{align*}
 dr&=-\frac{du}{u^2}&e_p&=-\mu u\\
 \frac{d\theta}{dt}&=Cu^2&e_c&=\frac{1}{2}\left(\left(\frac{du}{u^2dt}\right)^2+C^2u^2\right)\\
 \Aboxed{dt&=\frac{d\theta}{Cu^2}}&&=\frac{C^2}{2}\left(\left(\frac{du}{d\theta}\right)^2+u^2\right)\tag{1.2}\label{eq:dt}
 \stepcounter{equation}
 \end{align*}
-Via le théorème de l'énergie mécanique, on sait que $e_m$ est constant par rapport au temps et donc constant par rapport à $\theta$ via (\ref{eq:dt}), d'où :
+Via le théorème de l'énergie mécanique, nous savons que $e_m$ est constant par rapport au temps et donc constant par rapport à $\theta$ via (\ref{eq:dt}), d'où :
 \begin{align*}
 e_m&=-\mu u+\frac{C^2}{2}\left(\left(\frac{du}{d\theta}\right)^2+u^2\right)\\
 0&=-\mu\frac{du}{d\theta}+C^2\frac{du}{d\theta}\left(\frac{d^2u}{d\theta^2}+u\right)\\
@@ -85,12 +85,12 @@ e_m&=-\mu u+\frac{C^2}{2}\left(\left(\frac{du}{d\theta}\right)^2+u^2\right)\\
 u&=\frac{\mu}{C^2}(1+e\cos(\theta-\theta_0))\tag{$\theta_0$ et $e$ Constantes d'intégration}
 \end{align*}
 
-On peut effectuer une rotation du repère tel que $\theta_0 = 0$ et ainsi
+Nous pouvons effectuer une rotation du repère tel que $\theta_0 = 0$ et ainsi
 \begin{equation}
 \boxed{r(\theta)=\frac{C^2/\mu}{1+e\cos\theta}}\label{eq:r}
 \end{equation}
 
-On reconnaît alors l'équation polaire d'une ellipse avec $p=C^2/\mu$, avec l'astre orbité occupant le foyer autour duquel l'équation est définie. On a alors deux nouveaux paramètres pour définir l'orbite son excentricité $e$ et son demi-grand-axe $a$ pour pouvoir ainsi décrire l'ellipse. Ainsi qu'un troisième pour décrire la position du satellite $\theta$ qui est donc l'anomalie vraie.
+Nous reconnaissons alors l'équation polaire d'une ellipse avec $p=C^2/\mu$, avec l'astre orbité occupant le foyer autour duquel l'équation est définie. Nous avons alors deux nouveaux paramètres pour définir l'orbite son excentricité $e$ et son demi-grand-axe $a$ pour pouvoir ainsi décrire l'ellipse. Ainsi qu'un troisième pour décrire la position du satellite $\theta$ qui est donc l'anomalie vraie.
 
 \subsection{Argument du périastre}
 
@@ -102,11 +102,11 @@ On reconnaît alors l'équation polaire d'une ellipse avec $p=C^2/\mu$, avec l'a
 
 Maintenant que nous savons que le satellite a pour trajectoire une ellipse. Il faut désormais positionner cette dernière dans le plan dans lequel le satellite. Pour cela, on définit le périastre, le point de l'orbite où le satellite est le plus proche de l'astre orbité, il est dénoté $Pe$ sur les schémas ci-contre. Il correspond à $\theta=0$ dans l'équation polaire de l'ellipse.
 
-On peut alors repérer le Périastre et par conséquent l'ellipse par rapport au nœud ascendant avec l'angle formé par la droite entre l'astre orbité et le nœud ascendant et celle entre l'astre orbité et le périastre. On appelle cet angle, argument du périastre (noté $\omega$).
+Nous pouvons alors repérer le Périastre et par conséquent l'ellipse par rapport au nœud ascendant avec l'angle formé par la droite entre l'astre orbité et le nœud ascendant et celle entre l'astre orbité et le périastre. On appelle cet angle, argument du périastre (noté $\omega$).
 
 \subsection{Synthèse}
 
-On a alors 6 paramètres orbitaux.\\\\
+Nous avons alors 6 paramètres orbitaux.\\\\
 2 pour décrire le plan dans lequel se déplace le satellite :\\
 \indent- $\Omega$, la longitude du nœud ascendant\\
 \indent- $i$, l'inclinaison\\\\
@@ -120,7 +120,7 @@ On a alors 6 paramètres orbitaux.\\\\
 \clearpage
 \section{Calcul des paramètres orbitaux}
 
-On a vu dans la section précédente qu'on peut définir la trajectoire et la position d'un satellite à l'aide de six paramètres orbitaux mais il faut aussi les calculer. durant la suite de cette section nous allons partir du principe que nous connaissons la position et le vecteur vitesse d'un satellite ainsi que du paramètre gravitationnel standard de l'astre orbité.
+Nous avons vu dans la section précédente qu'on peut définir la trajectoire et la position d'un satellite à l'aide de six paramètres orbitaux mais il faut aussi les calculer. durant la suite de cette section nous allons partir du principe que nous connaissons la position et le vecteur vitesse d'un satellite ainsi que du paramètre gravitationnel standard de l'astre orbité.
 
 \subsection{Longitude du nœud ascendant et inclinaison}
 
@@ -128,12 +128,12 @@ On a vu dans la section précédente qu'on peut définir la trajectoire et la po
 \includegraphics[width=0.9\linewidth]{1_2_1.png}
 \end{wrapfigure}
 
-On peut facilement déterminer l'inclinaison et la longitude du nœud ascendant avec $\overrightarrow C$ qui peut être facilement calculé à l'aide de (\ref{eq:C}).
-\\ comme on peut le voir sur le schéma ci-contre, il suffit d'avoir les coordonnées de $\overrightarrow C$ dans le repère sphérique pour avoir ces deux paramètres : \boxed{\Omega=\overrightarrow C_\phi +\pi/2} et \boxed{i=\pi-\overrightarrow C_\delta}
+Nous pouvons facilement déterminer l'inclinaison et la longitude du nœud ascendant avec $\overrightarrow C$ qui peut être facilement calculé à l'aide de (\ref{eq:C}).
+\\ comme on peut le voir sur le schéma ci-contre, il suffit d'avoir les coordonnées de $\overrightarrow C$ dans le repère sphérique pour avoir ces deux paramètres : \boxed{\Omega=\overrightarrow C_\phi +\pi/2} et \boxed{i=\pi/2-\overrightarrow C_\delta}
 
 \subsection{Longueur du demi-grand-axe}
 
-L'énergie mécanique étant constante sur toute l'orbite du satellite on peut la calculer à des points particuliers de l'orbite pour déterminer des paramètres orbitaux. On va la calculer au périastre :
+L'énergie mécanique étant constante sur toute l'orbite du satellite nous pouvons la calculer à des points particuliers de l'orbite pour déterminer des paramètres orbitaux. nous allons la calculer au périastre :
 \begin{align*}
 r_{pe}&=r(\theta=0)&\dot r(\theta)&=\frac{C}{r^2}\frac{a(1-e^2)e\sin\theta}{(1+e\cos\theta)^2}\tag{\ref{eq:dt},A1.5}\\
 r_{pe}&=a(1-e)&\Aboxed{\dot r(\theta)&=C\frac{e\sin\theta}{a(1-e^2)}}\stepcounter{equation}\tag{\theequation}\label{eq:rpoint}\\
@@ -143,11 +143,11 @@ e_m&=\frac{1}{2}\left(0^2+\left(\frac{C}{r_{pe}}\right)^2\right)-\frac{\mu}{r_{p
 \Aboxed{e_m&=-\frac{\mu}{2a}}\stepcounter{equation}\tag{\theequation}\label{eq:e_m}\\
 \end{align*}
 
-Ainsi en calculant $e_m$ avec $e_m=\frac{1}{2}\left(\frac{d\overrightarrow r}{dt}\right)^2-\frac{\mu}{r}$, on peut calculer la longueur du demi-grand-axe $a$.
+Ainsi en calculant $e_m$ avec $e_m=\frac{1}{2}\left(\frac{d\overrightarrow r}{dt}\right)^2-\frac{\mu}{r}$, nous pouvons calculer la longueur du demi-grand-axe $a$.
 
 \subsection{Excentricité}
 
-Comme précédemment pour la longueur du demi-grand-axe, on part de l'énergie mécanique massique calculée au Périastre pour calculer l'excentricité.
+Comme précédemment pour la longueur du demi-grand-axe, nous partons de l'énergie mécanique massique calculée au Périastre pour calculer l'excentricité.
 
 \begin{align*}
 e_m&=\frac{1}{2}\left(0^2+\left(\frac{C}{r_{pe}}\right)^2\right)-\frac{\mu}{r_{pe}}\\
@@ -163,11 +163,11 @@ e_m&=\frac{1}{2}\left(0^2+\left(\frac{C}{r_{pe}}\right)^2\right)-\frac{\mu}{r_{p
 \boxed{e=\sqrt{1-\frac{C^2}{\mu a}}\label{eq:e}}
 \end{equation}
 
-Ainsi avec $C$ et $a$, on peut calculer l'excentricité de l'orbite.
+Ainsi avec $C$ et $a$, nous pouvons calculer l'excentricité de l'orbite.
 
 \subsection{Anomalie vraie}
 
-On peut déterminer l'anomalie vraie $\theta$ du satellite à l'aide de $r$ et de $\dot r$ et de (\ref{eq:Artheta}) et (\ref{eq:rpoint})
+Nous pouvons déterminer l'anomalie vraie $\theta$ du satellite à l'aide de $r$ et de $\dot r$ et de (\ref{eq:Artheta}) et (\ref{eq:rpoint})
 \begin{align*}
 r(\theta)&=\frac{a(1-e^2)}{1+e\cos\theta}&\dot r(\theta)&=C\frac{e\sin\theta}{a(1-e^2)}\tag{\ref{eq:Artheta}), (\ref{eq:rpoint}}\\
 \tan\left(\frac{\theta}{2}\right)&=\frac{\sin\theta}{1+\cos\theta}&\Aboxed{e\sin\theta&=\frac{a(1-e^2)}{C}\dot r}\\
@@ -179,11 +179,11 @@ r(\theta)&=\frac{a(1-e^2)}{1+e\cos\theta}&\dot r(\theta)&=C\frac{e\sin\theta}{a(
 \stepcounter{equation}\tag{\theequation}\label{eq:tantheta/2}
 \end{align*}
 
-Pour que cette équation soit toujours utile ($\theta =\pi$), il faut prolonger par continuité $\arctan$. Dans le contexte de NOCa, on utilise la fonction numpy \verb|arctan2| (qui fonctionne même pour $\theta=\pi$) qui prend en entrée les valeurs de $\sin\theta$, et de $\cos\theta$ qu'on obtient à l'aide des deux équations encadrées ci-dessus.
+Pour que cette équation soit toujours utile ($\theta =\pi$), il faut prolonger par continuité $\arctan$. Dans le contexte de NOCa, nous utilisons la fonction numpy \verb|arctan2| (qui fonctionne même pour $\theta=\pi$) qui prend en entrée les valeurs de $\sin\theta$, et de $\cos\theta$ qu'on obtient à l'aide des deux équations encadrées ci-dessus.
 
 \subsection{Argument du périastre}
 
-Pour calculer l'argument du périastre $\omega$, nous allons d'abord  calculer $\theta+\omega$. On définit d'abord un vecteur qui colinéaire à celui reliant l'origine au nœud ascendant, $\overrightarrow{RAN}$.
+Pour calculer l'argument du périastre $\omega$, nous allons d'abord  calculer $\theta+\omega$. Nous définissons d'abord un vecteur qui colinéaire à celui reliant l'origine au nœud ascendant, $\overrightarrow{RAN}$.
 \begin{align*}
 \overrightarrow{RAN}&=\overrightarrow{e_z}\wedge\overrightarrow C\\
 \overrightarrow{RAN}\wedge\overrightarrow r&=r\left\|\overrightarrow{RAN}\right\|\sin(\theta+\omega)\frac{\overrightarrow C}{C}\\
@@ -202,11 +202,11 @@ rC\sin i\cos(\theta+\omega)&=r^2\left(\overrightarrow{e_z}\cdot\frac{d\overright
 \stepcounter{equation}\tag{\theequation}\label{eq:costheta+omega}
 \end{align*}
 
-Ainsi nous pouvons utiliser l'arc moitié comme pour $\theta$ pour calculer \\$\theta+\omega$ à l'aide de (\ref{eq:sintheta+omega}) et de (\ref{eq:costheta+omega}) mais comme précédemment NOCa utilise la fonction \verb|arctan2| pour éviter des problèmes lorsque le satellite se situe à son nœud ascendant. On peut aussi remarquer une division par $0$ lorsque $i=0$, mais dans ce cas, la notion de nœud ascendant et donc d'argument du périastre perd tout son sens puisque la trajectoire du satellite se situe dans le plan équatorial.
+Ainsi nous pouvons utiliser l'arc moitié comme pour $\theta$ pour calculer \\$\theta+\omega$ à l'aide de (\ref{eq:sintheta+omega}) et de (\ref{eq:costheta+omega}) mais comme précédemment NOCa utilise la fonction \verb|arctan2| pour éviter des problèmes lorsque le satellite se situe à son nœud ascendant. Nous pouvons aussi remarquer une division par $0$ lorsque $i=0$, mais dans ce cas, la notion de nœud ascendant et donc d'argument du périastre perd tout son sens puisque la trajectoire du satellite se situe dans le plan équatorial.
 
 \subsection{Synthèse}
 
-On peut calculer les paramètres orbitaux à partir du vecteur et du vecteur vitesse.\\
+Nous pouvons calculer les paramètres orbitaux à partir du vecteur et du vecteur vitesse.\\
 - $\Omega$, en représentant $\overrightarrow C$ calculé avec (\ref{eq:C}) dans le système de coordonnées sphérique\\
 - $i$, de même\\
 - $a$, en calculant $e_m$ et en utilisant (\ref{eq:e_m})\\
@@ -216,7 +216,7 @@ On peut calculer les paramètres orbitaux à partir du vecteur et du vecteur vit
 
 \section{Utilisation des paramètres orbitaux}
 
-Dans la section précédente, nous avons calculé les paramètres orbitaux en fonction du vecteur position et du vecteur vitesse. Ici, l'objectif sera de calculer ces deux vecteurs en fonctions des paramètres orbitaux et ainsi que par rapport au temps. On remarque que seule l'anomalie change en fonction du temps. Ainsi calculer les vecteurs en fonctions de l'anomalie vraie et en suite calculer l'anomalie vraie en fonction du temps semble être une bonne approche.
+Dans la section précédente, nous avons calculé les paramètres orbitaux en fonction du vecteur position et du vecteur vitesse. Ici, l'objectif sera de calculer ces deux vecteurs en fonctions des paramètres orbitaux et ainsi que par rapport au temps. Nous remarquons que seule l'anomalie change en fonction du temps. Ainsi calculer les vecteurs en fonctions de l'anomalie vraie et en suite calculer l'anomalie vraie en fonction du temps semble être une bonne approche.
 
 \subsection{Position et vitesse en fonction de l'anomalie vraie}
 
@@ -227,7 +227,7 @@ Dans la section précédente, nous avons calculé les paramètres orbitaux en fo
 \end{wrapfigure}
 
 Grâce à (\ref{eq:Artheta}), Nous avons déjà une expression de la norme du vecteur position en fonction de $\theta$. Il suffit désormais d'avoir ses projections sur les différents axes du repère.\\
-Pour cela, on définit un repère transitoire avec $\overrightarrow{e_{RAN}}$, et $\overrightarrow{e_i}$ définit par les schémas ci-contre. Ainsi, nous avons :
+Pour cela, nous définissons un repère transitoire avec $\overrightarrow{e_{RAN}}$, et $\overrightarrow{e_i}$ définit par les schémas ci-contre. Ainsi, nous avons :
 
 \begin{align*}
 \overrightarrow{e_{RAN}}&=\cos\Omega\overrightarrow{e_x}+\sin\Omega\overrightarrow{e_y}\\
@@ -240,7 +240,7 @@ Pour cela, on définit un repère transitoire avec $\overrightarrow{e_{RAN}}$, e
 \overrightarrow{e_r}=\begin{pmatrix}
 \cos(\theta+\omega)\cos\Omega-\sin(\theta+\omega)\cos i\sin\Omega\\
 \cos(\theta+\omega)\sin\Omega+\cos(\theta+\omega)\cos i\sin\Omega\\
-\sin(\theta+\omega)\sin i\end{pmatrix}}\label{eq:er}
+\sin(\theta+\omega)\sin i\end{pmatrix}}\label{eq:e_r}
 \end{equation}
 \\\\
 \begin{equation}\boxed{
@@ -250,7 +250,7 @@ Pour cela, on définit un repère transitoire avec $\overrightarrow{e_{RAN}}$, e
 \cos(\theta+\omega)\sin i\end{pmatrix}}\label{eq:e_theta}
 \end{equation}
 
-On voit qu'on vérifie bien (\ref{eq:sintheta+omega}), avec cette nouvelle expression de $\overrightarrow{e_r}$
+Nous voyons que nous vérifions bien (\ref{eq:sintheta+omega}), avec cette nouvelle expression de $\overrightarrow{e_r}$
 
 \begin{align*}
 \frac{d\overrightarrow r}{dt}&=\dot r\overrightarrow{e_r}+r\dot\theta\overrightarrow{e_\theta}&
@@ -259,11 +259,11 @@ On voit qu'on vérifie bien (\ref{eq:sintheta+omega}), avec cette nouvelle expre
 \stepcounter{equation}\tag{\theequation}\label{eq:rpointtheta}\\
 \end{align*}
 
-Ainsi en regroupant ces quatre équations, nous pouvons calculer le vecteur position et le vecteur vitesse en fonction de l'anomalie vraie.
+Ainsi en regroupant ces quatre équations, nous pouvons calculer le vecteur position et le vecteur vitesse en fonction de l'anomalie vraie, en utilisant en supplément, (\ref{eq:Artheta}), (\ref{eq:rpoint}).
 
 \subsection{Anomalie vraie en fonction du temps}
 
-Pour calculer l'anomalie vraie en fonction du temps, nous allons passer par une fonction auxiliaire qui a une dérivée temporelle constante. On remarque que $\overrightarrow r(\theta)$ ainsi que $\frac{d\overrightarrow r}{dt}(\theta)$ sont $2\pi$-périodique donc cette fonction devrait aussi être périodique. On se place dans un repère temporel tel que $\theta(t=0)=0$ On définit alors $f(\theta)$ tel que (avec $T$ la période de l'orbite)  :
+Pour calculer l'anomalie vraie en fonction du temps, nous allons passer par une fonction auxiliaire qui a une dérivée temporelle constante. Nous remarquons que $\overrightarrow r(\theta)$ ainsi que $\frac{d\overrightarrow r}{dt}(\theta)$ sont $2\pi$-périodique donc cette fonction devrait aussi être périodique. Nous nous plaçons dans un repère temporel tel que $\theta(t=0)=0$ Nous définissons alors $f(\theta)$ tel que (avec $T$ la période de l'orbite)  :
 \begin{align*}
 \frac{dM}{dt}&=\frac{2\pi}{T}&\tan\left(\frac{\theta}{2}\right)&=\sqrt{\frac{1+e}{1-e}}\tan\left(\frac{E}{2}\right)\tag{\ref{eq:AthetaE}}\\
 &=\frac{d\theta}{dt}\frac{dM}{d\theta}&\frac{d\theta}{1+\cos\theta}&=\sqrt{\frac{1+e}{1-e}}\frac{dE}{1+\cos E}\\
@@ -282,7 +282,8 @@ M(E=2\pi)-M(E=0)&=2\pi\frac{2\pi}{T}\sqrt{\frac{a^3}{\mu}}
 \begin{equation}\boxed{T=2\pi\sqrt\frac{a^3}{\mu}}\label{eq:T}\end{equation}
 \begin{equation}\boxed{M=E-e\sin E=M_0+2\pi\frac{t}{T}}\label{eq:M}\end{equation}
 
-On appelle cette fonction auxiliaire l'anomalie moyenne. Pour obtenir $\theta$, il faut résoudre numériquement cette équation, ce qui est fait à l'aide de \verb|fast_kepler| qui permet de calculer $E$ et de (\ref{eq:AthetaE}). Ainsi nous avons une expression de $\theta$ en fonction du temps.
+Nous appelons cette fonction auxiliaire l'anomalie moyenne. Pour obtenir $\theta$, il faut résoudre numériquement cette équation, ce qui est fait à l'aide de \verb|fast_kepler| qui permet de calculer $E$ et de (\ref{eq:AthetaE}). Ainsi nous avons une expression de $\theta$ en fonction du temps.
+\\\indent Nous pouvons réajuster le référentiel temporel avec la constante d'intégration $M_0$.
 
 \subsection{Synthèse}
 
@@ -290,6 +291,43 @@ Les paramètres orbitaux permettent de calculer la position et la vitesse du sat
 - $M$, calculé à l'aide de (\ref{eq:M})\\
 - $\theta$, obtenu numériquement à l'aide de $M$ et de (\ref{eq:AthetaE})\\
 - vecteur vitesse et vecteur position, à l'aide de (\ref{eq:rpointtheta}) et (\ref{eq:rtheta})
+
+\chapter{Manœuvres}
+
+\section{Définitions}
+
+Lors du chapitre précédent, nous avons défini une orbite mais sans aucun moyen d'en changer. Pour changer d'orbite, un satellite peut effectuer une poussée contrôlée lors d'une changeant ainsi son vecteur vitesse donc ses paramètres orbitaux et donc son orbite.
+
+\subsection{Repère de manœuvre}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\includegraphics[width=0.9\linewidth]{2_1_1.png}
+\end{wrapfigure}
+
+Pour exécuter, nous définissons un nouveau repère avec dans l'ordre, le vecteur prograde colinéaire au vecteur vitesse $\overrightarrow{e_p}$, le vecteur normal colinéaire à $\overrightarrow C$, $\overrightarrow{e_n}$ et le vecteur radial extérieur $\overrightarrow{e_e}=\overrightarrow{e_p}\wedge\overrightarrow{e_n}$.
+
+\begin{align*}
+\overrightarrow{e_p}\cdot\overrightarrow{e_\theta}&=\frac{C}{r}\frac{1}{\sqrt{\dot r^2+\left(\frac{C}{r}\right)^2}}\\
+&=\frac{C}{r}\frac{1}{\sqrt{\left(C\frac{e\sin\theta}{a(1-e^2)}\right)^2+\left(\frac{C(1+e\cos\theta)}{a(1-e^2)}\right)^2}}\tag{\ref{eq:rpoint}), (\ref{eq:Artheta}}\\
+&=\frac{a(1-e^2)}{r}\frac{1}{\sqrt{e^2\sin^2\theta+e^2\cos^2\theta+2e\cos\theta+1}}\\
+\Aboxed{\overrightarrow{e_p}\cdot\overrightarrow{e_\theta}&=\frac{1+e\cos\theta}{\sqrt{e^2+2e\cos\theta+1}}}
+\end{align*}
+\begin{align*}
+\overrightarrow{e_p}\cdot\overrightarrow{e_r}&=\dot r\frac{1}{\sqrt{\dot r^2+\left(\frac{C}{r}\right)^2}}
+&\overrightarrow{e_e}&=\overrightarrow{e_p}\wedge\overrightarrow{e_n}\\
+&=\frac{eC\sin\theta}{a(1-e^2)}\frac{a(1-e^2)}{C\sqrt{e^2+2e\cos\theta+1}}&
+&=\overrightarrow{e_p}\wedge\left(\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}\right)\\
+\Aboxed{\overrightarrow{e_p}\cdot\overrightarrow{e_r}&=\frac{e\sin\theta}{\sqrt{e^2+2e\cos\theta+1}}}&
+\Aboxed{\overrightarrow{e_e}&=\left(\overrightarrow{e_p}\cdot\overrightarrow{e_\theta}\right)\overrightarrow{e_r}-
+\left(\overrightarrow{e_p}\cdot\overrightarrow{e_r}\right)\overrightarrow{e_\theta}}
+\end{align*}
+
+Ainsi avec (\ref{eq:e_r}) et (\ref{eq:e_theta}), nous pouvons calculer $\overrightarrow{e_p}$ et $\overrightarrow{e_e}$. $\overrightarrow{e_n}$ étant colinéaire avec $\overrightarrow{C}$, c'est plus simple de le calculer :
+\begin{equation*}\boxed{
+\overrightarrow{e_n}=\begin{pmatrix}\sin\Omega\sin i
+\\-\cos\Omega\sin i
+\\\cos i
+\end{pmatrix}}\end{equation*}
 
 \appendix
 
@@ -315,13 +353,13 @@ Sur la figure ci-contre M appartient à l'ellipse tracée.
 
 \subsection{Équation cartésienne de l'ellipse}
 
-L'ellipse définie comme au-dessus ne permet de la tracer facilement car une équation comme (\ref{eq:A1.1}) est plus qu'implicite. On va alors trouver une forme cartésienne de cette équation.
+L'ellipse définie comme au-dessus ne permet de la tracer facilement car une équation comme (\ref{eq:A1.1}) est plus qu'implicite. Nous allons alors trouver une forme cartésienne de cette équation.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A1_2.png}
 \end{wrapfigure}
 
-Sur la figure ci-contre, O sera notre origine et est placé au centre de l'ellipse c'est-à-dire au milieu des deux foyers. Ainsi, on définit x et y en fonction de O.\\
+Sur la figure ci-contre, O sera notre origine et est placé au centre de l'ellipse c'est-à-dire au milieu des deux foyers. Ainsi, nous définissons x et y en fonction de O.\\
 \begin{equation*}
 r^2 = (ae-x)^2 + y^2 $$et$$ r'^2 = (x+ae)^2 + y^2
 \end{equation*}
@@ -354,7 +392,7 @@ où $b=a\sqrt{1-e^2}$ est la longueur du demi petit axe
 
 \subsection{Anomalie excentrique}
 
-On peut se rendre compte que l'équation cartésienne de l'ellipse ressemble beaucoup à celle du cercle et donc l'idée d'utiliser un angle pour caractériser la position d'un point sur l'ellipse semble cohérente.
+Nous peut nous rendre compte que l'équation cartésienne de l'ellipse ressemble beaucoup à celle du cercle et donc l'idée d'utiliser un angle pour caractériser la position d'un point sur l'ellipse semble cohérente.
 
 Ainsi avec 
 }
@@ -368,14 +406,14 @@ $x=a\cos(E)$ & et & $y=b\sin(E)$
 }
 \end{equation}
 
- on vérifie toujours (\ref{eq:A1.3}) et on passe bien par tous les points de l'ellipse. $E$ est appelé l'anomalie excentrique.\\
+ Nous vérifions toujours (\ref{eq:A1.3}) et cette paramétrisation décrit bien tous les points de l'ellipse. $E$ est appelé l'anomalie excentrique.\\
 
 \begin{wrapfigure}{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{A1_4.png}
 \end{wrapfigure}
 
-On peut représenter sur l'ellipse deux cercles, le cercle principal de rayon a et le cercle secondaire de rayon b, tous deux centrés en le centre de l'ellipse (ici $O$). Ces deux cercles permettent de représenter à quoi l'anomalie excentrique correspond géométriquement.\\
-\indent Lorsqu'on a $E$, on peut lire sur le cercle principal l'abscisse du point qui y est associé (en l'occurrence $M$) et son ordonnée sur le cercle secondaire.
+Nous pouvons représenter sur l'ellipse deux cercles, le cercle principal de rayon a et le cercle secondaire de rayon b, tous deux centrés en le centre de l'ellipse (ici $O$). Ces deux cercles permettent de représenter à quoi l'anomalie excentrique correspond géométriquement.\\
+\indent Lorsqu'on a $E$, nous pouvons lire sur le cercle principal l'abscisse du point qui y est associé (en l'occurrence $M$) et son ordonnée sur le cercle secondaire.
 
 \clearpage
 \subsection{Anomalie vraie}
@@ -384,8 +422,8 @@ On peut représenter sur l'ellipse deux cercles, le cercle principal de rayon a 
 \includegraphics[width=0.9\linewidth]{A1_5.png}
 \end{wrapfigure}
 
-On peut remarquer que l'anomalie excentrique consiste à mesurer un angle qui caractérise le point autour du centre de l'ellipse. Mais on pourrait aussi bien mesurer un angle autour d'un des foyers, c'est l'anomalie vraie, dénotée $\theta$.\\
-On peut alors se placer dans un système de coordonnées polaires pour déterminer le rayon $r$.
+Nous pouvons remarquer que l'anomalie excentrique consiste à mesurer un angle qui caractérise le point autour du centre de l'ellipse. Mais on pourrait aussi bien mesurer un angle autour d'un des foyers, c'est l'anomalie vraie, dénotée $\theta$.\\
+Nous pouvons alors nous placer dans un système de coordonnées polaires pour déterminer le rayon $r$.
 \begin{align*}
 x-ae&=r\cos(\theta)\\
 x&=r\cos(\theta)+ae\\
@@ -422,9 +460,9 @@ Avec $p=a(1-e^2)$. Comme l'anomalie vraie et l'anomalie excentrique permettent t
 
 \subsection{Présentation}
 
-Habituellement dans un espace en deux dimensions, on se repère à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, on va présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$), ces deux vecteurs étant unitaires.\\\\
+Habituellement dans un espace en deux dimensions, nous nous repérons à l'aide d'un système de coordonnées cartésien ($x$, $y$) avec son repère associé ($\overrightarrow{e_x}$, $\overrightarrow{e_y}$). Mais on peut utiliser d'autres systèmes de coordonnées. Ici, nous allons présenter le système de coordonnées polaire ($r$, $\theta$), ainsi que son repère associé ($\overrightarrow{e_r}$, $\overrightarrow{e_\theta}$), ces deux vecteurs étant unitaires.\\\\
 
-\noindent On définit $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine : 
+\noindent Nous définissons $r$, $\theta$, $\overrightarrow{e_r}$, et $\overrightarrow{e_\theta}$ tel que pour repérer $M$ avec $O$ comme origine : 
 }\begin{align*}
 \overrightarrow{OM}&=\overrightarrow r=r\cos\theta\overrightarrow{e_x}+r\sin\theta\overrightarrow{e_y}\\
 \frac{\partial\overrightarrow r}{\partial r}&=k_r\overrightarrow{e_r}&\frac{\partial\overrightarrow r}{\partial\theta}&=k_\theta\overrightarrow{e_\theta}\tag{$k_r,k_\theta>0$}\\
@@ -434,7 +472,7 @@ k_r&=1&k_\theta&=r\\
 \Aboxed{\overrightarrow{e_\theta}&=-\sin\theta\overrightarrow{e_x}+\cos\theta\overrightarrow{e_y}}
 \end{align*}
 
-On remarque que \boxed{\overrightarrow{e_r}\cdot\overrightarrow{e_\theta}=0} et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}=\overrightarrow{e_z}$, faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\theta}$) un repère orthonormé direct.
+Nous remarquons que \boxed{\overrightarrow{e_r}\cdot\overrightarrow{e_\theta}=0} et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}=\overrightarrow{e_z}$, faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\theta}$) un repère orthonormé direct.
 
 \subsection{Différenciation}
 
@@ -470,7 +508,7 @@ $d^2\overrightarrow{r}=\left(d^2-r(d\theta)^2\right)\overrightarrow{e_r}+\left(r
 \includegraphics[width=0.9\linewidth]{A3_1.png}
 \end{wrapfigure}
 Comme pour l'annexe précédente, nous allons définir un autre système de coordonnées mais non pour $\mathbb R^2$ mais pour $\mathbb R^3$. Ici, nous traiterons du système de coordonnées sphériques géographique ($r$,$\phi$,$\delta$) où $\phi$ et $\delta$ sont respectivement la longitude et la latitude.
-Mais avant, nous allons définir le repère cartésien autour d'une boule tournante (la Terre par exemple). On définit $\overrightarrow{e_z}$ comme le vecteur colinéaire au moment cinétique de la boule, en terme géographique, le nord. On définit $\overrightarrow{e_x}$ comme un vecteur unitaire pointant vers un point fixe dans le ciel, par exemple le point vernal en 2000 (noté $\gamma$) pour la Terre c'est-à-dire, la position du Soleil lors de l'équinoxe de printemps en 2000, $\overrightarrow{e_x}$ étant dans le plan équatorial, $\overrightarrow{e_x}\cdot\overrightarrow{e_z}=0$. Ainsi on définit $\overrightarrow{e_y}=\overrightarrow{e_z}\wedge\overrightarrow{e_x}$  afin que ($\overrightarrow{e_x}$,$\overrightarrow{e_y}$,$\overrightarrow{e_z}$) soit un repère orthonormé direct. On définit $r$, $\phi$, $\delta$, $\overrightarrow{e_r}$, $\overrightarrow{e_\phi}$, et $\overrightarrow{e_\delta}$ tel que pour repérer M avec O comme origine :
+Mais avant, nous allons définir le repère cartésien autour d'une boule tournante (la Terre par exemple). Nous définissons $\overrightarrow{e_z}$ comme le vecteur colinéaire au moment cinétique de la boule, en terme géographique, le nord. Nous définissons $\overrightarrow{e_x}$ comme un vecteur unitaire pointant vers un point fixe dans le ciel, par exemple le point vernal en 2000 (noté $\gamma$) pour la Terre c'est-à-dire, la position du Soleil lors de l'équinoxe de printemps en 2000, $\overrightarrow{e_x}$ étant dans le plan équatorial, $\overrightarrow{e_x}\cdot\overrightarrow{e_z}=0$. Ainsi nous définissons $\overrightarrow{e_y}=\overrightarrow{e_z}\wedge\overrightarrow{e_x}$  afin que ($\overrightarrow{e_x}$,$\overrightarrow{e_y}$,$\overrightarrow{e_z}$) soit un repère orthonormé direct. Nous définissons $r$, $\phi$, $\delta$, $\overrightarrow{e_r}$, $\overrightarrow{e_\phi}$, et $\overrightarrow{e_\delta}$ tel que pour repérer M avec O comme origine :
 \begin{align*}
 \overrightarrow{OM}&=\overrightarrow r= r\cos\phi\cos\delta\overrightarrow{e_x}+r\sin\phi\cos\delta\overrightarrow{e_y}+r\sin\delta\overrightarrow{e_z}\\
 \frac{\partial\overrightarrow{r}}{\partial r}&=k_r\overrightarrow{e_r}\\
@@ -487,7 +525,7 @@ k_\delta&=r\\
 \Aboxed{\overrightarrow{e_\delta}&=-\cos\phi\sin\delta\overrightarrow{e_x}-\sin\phi\sin\delta\overrightarrow{e_y}+\cos\delta\overrightarrow{e_z}}\\
 \end{align*}
 \clearpage
-On remarque aussi $\overrightarrow{e_r}\cdot\overrightarrow{e_\phi}=\overrightarrow{e_r}\cdot\overrightarrow{e_\delta}=\overrightarrow{e_\phi}\cdot\overrightarrow{e_\delta}=0$ et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\phi}=\overrightarrow{e_\delta}$ faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\phi}$,$\overrightarrow{e_\delta}$) un repère orthonormé direct.
+Nous remarquons aussi $\overrightarrow{e_r}\cdot\overrightarrow{e_\phi}=\overrightarrow{e_r}\cdot\overrightarrow{e_\delta}=\overrightarrow{e_\phi}\cdot\overrightarrow{e_\delta}=0$ et que $\overrightarrow{e_r}\wedge\overrightarrow{e_\phi}=\overrightarrow{e_\delta}$ faisant de ($\overrightarrow{e_r}$,$\overrightarrow{e_\phi}$,$\overrightarrow{e_\delta}$) un repère orthonormé direct.
 
 \subsection{Différenciation}
 Comme pour le repère polaire, les vecteurs $\overrightarrow{e_r}$, $\overrightarrow{e_\phi}$, et $\overrightarrow{e_\delta}$ ne sont pas immobiles. donc leur différentielle n'est pas forcément nulle.
