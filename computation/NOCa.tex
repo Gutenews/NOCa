@@ -297,10 +297,11 @@ Les paramètres orbitaux permettent de calculer la position et la vitesse du sat
 \section{Définitions}
 
 Lors du chapitre précédent, nous avons défini une orbite mais sans aucun moyen d'en changer. Pour changer d'orbite, un satellite peut effectuer une poussée contrôlée lors d'une changeant ainsi son vecteur vitesse donc ses paramètres orbitaux et donc son orbite.
+\\\indent Nous considérons ici les manœuvres comme étant impulsionnelles, c'est-à-dire que le changement appliqué au vecteur vitesse ne se fait pas par le biais d'une accélération au cours du temps mais d'une impulsion $\overrightarrow{\Delta V}$ appliquée au nœud de la manœuvre, son point d'exécution.
 
 \subsection{Repère de manœuvre}
 
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}[6]{r}{0.4\textwidth}
 \includegraphics[width=0.9\linewidth]{2_1_1.png}
 \end{wrapfigure}
 
@@ -311,23 +312,41 @@ Pour exécuter, nous définissons un nouveau repère avec dans l'ordre, le vecte
 &=\frac{C}{r}\frac{1}{\sqrt{\left(C\frac{e\sin\theta}{a(1-e^2)}\right)^2+\left(\frac{C(1+e\cos\theta)}{a(1-e^2)}\right)^2}}\tag{\ref{eq:rpoint}), (\ref{eq:Artheta}}\\
 &=\frac{a(1-e^2)}{r}\frac{1}{\sqrt{e^2\sin^2\theta+e^2\cos^2\theta+2e\cos\theta+1}}\\
 \Aboxed{\overrightarrow{e_p}\cdot\overrightarrow{e_\theta}&=\frac{1+e\cos\theta}{\sqrt{e^2+2e\cos\theta+1}}}
+\stepcounter{equation}\tag{\theequation}\label{eq:e_pe_theta}
 \end{align*}
 \begin{align*}
 \overrightarrow{e_p}\cdot\overrightarrow{e_r}&=\dot r\frac{1}{\sqrt{\dot r^2+\left(\frac{C}{r}\right)^2}}
 &\overrightarrow{e_e}&=\overrightarrow{e_p}\wedge\overrightarrow{e_n}\\
 &=\frac{eC\sin\theta}{a(1-e^2)}\frac{a(1-e^2)}{C\sqrt{e^2+2e\cos\theta+1}}&
-&=\overrightarrow{e_p}\wedge\left(\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}\right)\\
-\Aboxed{\overrightarrow{e_p}\cdot\overrightarrow{e_r}&=\frac{e\sin\theta}{\sqrt{e^2+2e\cos\theta+1}}}&
-\Aboxed{\overrightarrow{e_e}&=\left(\overrightarrow{e_p}\cdot\overrightarrow{e_\theta}\right)\overrightarrow{e_r}-
-\left(\overrightarrow{e_p}\cdot\overrightarrow{e_r}\right)\overrightarrow{e_\theta}}
+&=\overrightarrow{e_p}\wedge\left(\overrightarrow{e_r}\wedge\overrightarrow{e_\theta}\right)
 \end{align*}
 
+\begin{equation}\boxed{
+\overrightarrow{e_p}\cdot\overrightarrow{e_r}=\frac{e\sin\theta}{\sqrt{e^2+2e\cos\theta+1}}}
+\label{eq:e_pe_r}
+\end{equation}
+
+\begin{equation}\boxed{
+\overrightarrow{e_e}=\left(\overrightarrow{e_p}\cdot\overrightarrow{e_\theta}\right)\overrightarrow{e_r}-
+\left(\overrightarrow{e_p}\cdot\overrightarrow{e_r}\right)\overrightarrow{e_\theta}}
+\label{eq:e_e}
+\end{equation}
+
 Ainsi avec (\ref{eq:e_r}) et (\ref{eq:e_theta}), nous pouvons calculer $\overrightarrow{e_p}$ et $\overrightarrow{e_e}$. $\overrightarrow{e_n}$ étant colinéaire avec $\overrightarrow{C}$, c'est plus simple de le calculer :
-\begin{equation*}\boxed{
+
+\begin{equation}\boxed{
 \overrightarrow{e_n}=\begin{pmatrix}\sin\Omega\sin i
 \\-\cos\Omega\sin i
 \\\cos i
-\end{pmatrix}}\end{equation*}
+\end{pmatrix}}\label{eq:e_n}\end{equation}
+
+Ainsi, nous avons un repère pour définir $\overrightarrow{\Delta V}$.
+
+\section{Calcul de manœuvres}
+
+\subsection{Manœuvre quelconque}
+
+Lorsqu'une manœuvre quelconque est exécutée, nous pouvons calculer les paramètres orbitaux de l'orbite de destination de façon similaire au chapitre 1. Pour cela, il faut calculer le nouveau vecteur vitesse en lui sommant $\overrightarrow{\Delta V}$ et effectuer les calculs comme précédemment.
 
 \appendix
 
@@ -345,7 +364,7 @@ Une ellipse est l'ensemble des points tel que la somme de la distance $r$ et $r'
 Autrement dit : 
 \begin{equation}
 \label{eq:A1.1}
-r + r' = 2a
+\boxed{r + r' = 2a}
 \tag{A1.1}
 \end{equation}
 Sur la figure ci-contre M appartient à l'ellipse tracée.
