@@ -296,6 +296,38 @@ class Orbit :
             mean anomaly.
         """
         return E-self.eccentricity*np.sin(E)
+
+    def _E2theta(self, E:float) :
+        """
+        Internal function to compute the true anomaly from the eccentric anomaly.
+
+        Parameters
+        ----------
+        E : float
+            eccentric anomaly.
+
+        Returns
+        -------
+        float
+            true anomaly.
+        """
+        return 2*np.atan(np.sqrt((1+self.eccentricity)/(1-self.eccentricity))*np.tan(2*E))
+    
+    def _M2E(self, M:float) :
+        """
+        Internal function to compute the eccentric anomaly from the mean anomaly.
+
+        Parameters
+        ----------
+        M : float
+            mean anomaly.
+
+        Returns
+        -------
+        float
+            eccentric anomaly.
+        """
+        return fk.kepler_array(M, self.eccentricity)
     
     def __str__(self) :
         return f"""Periapsis : {self.periapsis()}m, 
@@ -425,8 +457,19 @@ class Maneuver :
         if not (M>=0. and M<2*np.pi) :
             raise NOCaError(f"M0 should be between 0. (included) and 2 pi (excluded), but recieved {M} instead")
         
+        self.theta = theta or self.orbit._E2M(E) or self.orbit._E2M(self.orbit._M2E(M))
         self.orbit = orbit
         self.time = time
+        self.deltaV=deltaV
+    
+    def _set(self) :
+        Ctheta = np.cos(self.theta)
+        Stheta = np.sin(self.theta)
+        norm = np.sqrt(self.orbit.eccentricity**2+2*self.orbit.eccentricity*Ctheta+1)
+        c = (1+self.orbit.eccentricity*Ctheta)/norm
+        s = self.orbit.eccentricity*Stheta/norm
+        temp = np.array([[c*self.deltaV[0,0]]])
+        speed = self.orbit.theta2speedVector(self.theta) + self.orbit._positionMatrix
 
 def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
     """
@@ -479,3 +522,6 @@ def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
         Cos = (r*speed[2,0]-(np.dot(speed.T,position)).item()*position[2,0]/r)/(c*np.sin(inclination))
         omega = np.atan2(Sin,Cos)-theta
     return Orbit(body, inclination, lRAN, a, eccentricity, omega), theta
+
+a = np.array([[0.],[1.],[2.]])
+print(a[1,0])
