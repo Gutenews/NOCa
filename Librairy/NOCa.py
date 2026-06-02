@@ -383,7 +383,7 @@ class Maneuver :
     orbit : Orbit
         The orbit before the maneuver
     deltaV : numpy ndarray
-        A vertical vector containing the component of the impulsion vector of the maneuver.
+        A vertical vector containing the components of the impulsion vector of the maneuver.
     time : float
         the time at which the maneuver is executed
     theta : float
@@ -397,9 +397,12 @@ class Maneuver :
     out : NOCa maneuver
         A maneuver object with the above specifications
     """
-    def __init__(self, orbit:Orbit, deltaV:np.array, time:float, theta:float=0., E:float=0., M:float=0.) :
+    def __init__(self, orbit:Orbit, deltaV:np.ndarray, time:float, theta:float=0., E:float=0., M:float=0.) :
         if not isinstance(orbit, Orbit) :
             raise TypeError(f"expecting orbit to be a NOCa orbit, recieved {type(orbit)} instead")
+        
+        if not isinstance(deltaV, np.ndarray) :
+            raise TypeError(f"expecting deltaV to be a numpy ndarray, recieved {type(deltaV)} instead")
         
         if not isinstance(theta, (float, int)) :
             raise TypeError(f"expecting theta0 to be a float, recieved {type(theta)} instead")
@@ -424,3 +427,55 @@ class Maneuver :
         
         self.orbit = orbit
         self.time = time
+
+def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
+    """
+    compute the orbit and the position on it of spacecraft base on its position and speed.
+
+    Parameters
+    ----------
+    body : NOCa Body
+        body around which the spacecraft orbit.
+    position : numpy ndarray
+        vertical vector containing the position of the spacecraft in 3D space in cartesian coordinates.
+    speed : numpy ndarray
+        vertical vector containing the speed vector of the spacecraft in 3D space in cartesian coordinates..
+
+    Returns
+    -------
+    orbit : NOCa orbit 
+        Orbit on which the spacecraft is moving.
+    theta : float
+        True anomaly of the spacecraft on the orbit.
+    """
+    if not isinstance(body, Body) :
+        raise TypeError(f"expectind body to be a NOCa body, recieved {type(body)} instead")
+    
+    if not isinstance(position, np.ndarray) :
+        raise TypeError(f"expectind position to be a numpy ndarray, recieved {type(position)} instead")
+    
+    if not isinstance(speed, np.ndarray) :
+        raise TypeError(f"expectind speed to be a numpy ndarray, recieved {type(speed)} instead")
+    
+    if not position.shape == (3,1) :
+        raise NOCaError(f"expecting a vertical vector for position, but recieved {position}")
+    
+    if not speed.shape == (3,1) :
+        raise NOCaError(f"expecting a vertical vector for position, but recieved {speed}")
+    
+    #to understand what's going on look at Computing orbital elements section of the NOCa computation
+    C = np.linalg.cross(position, speed, axis=0)
+    lRAN = np.pi/2+np.atan2(C[1,0],C[0,0])
+    inclination = np.arccos(C[2,0]/C)
+    c = np.linalg.norm(C)
+    r = np.linalg.norm(position)
+    a = -body.mu/(np.linalg.norm(speed)+2*body.mu/r)
+    eccentricity = np.sqrt(1-c**2/(body.mu*a))
+    theta = np.atan2(a*(1-eccentricity**2)*speed[0,0]/c,a*(1-eccentricity**2)/r-1)
+    if inclination == 0. :
+        omega = 0.
+    else : 
+        Sin = position[2,0]/(r*np.sin(inclination))
+        Cos = (r*speed[2,0]-(np.dot(speed.T,position)).item()*position[2,0]/r)/(c*np.sin(inclination))
+        omega = np.atan2(Sin,Cos)-theta
+    return Orbit(body, inclination, lRAN, a, eccentricity, omega), theta
