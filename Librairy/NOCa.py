@@ -167,10 +167,58 @@ class Orbit :
                                           [Somega*Si                   ,Comega*Si                    ,Ci]])
     
     def periapsis(self) :
+        """
+        return the height of the periapsis
+
+        Returns
+        -------
+        float
+            height of the periapsis.
+        """
         return self.a*(1-self.eccentricity**2)/(1+self.eccentricity)
     
     def apoapsis(self) :
+        """
+        return the height of the apoapsis
+
+        Returns
+        -------
+        float
+            height of the apoapsis.
+        """
         return self.a*(1-self.eccentricity**2)/(1-self.eccentricity)
+    
+    def _theta2E(self, theta:float) :
+        """
+        Internal function to compute the eccentric anomaly from the true anomaly.
+
+        Parameters
+        ----------
+        theta : float
+            true anomaly.
+
+        Returns
+        -------
+        float
+            eccentric anomaly.
+        """
+        return 2*np.atan(np.sqrt((1-self.eccentricity)/(1+self.eccentricity))*np.tan(theta/2))
+    
+    def _E2M(self, E:float) :
+        """
+        Internal function to compute the mean anomaly from the eccentric anomaly.
+
+        Parameters
+        ----------
+        E : float
+            eccentric anomaly.
+
+        Returns
+        -------
+        float
+            mean anomaly.
+        """
+        return E-self.eccentricity*np.sin(E)
     
     def __str__(self) :
         return f"""Periapsis : {self.periapsis()}m, 
@@ -238,6 +286,17 @@ class Spacecraft :
         if not (M0>=0. and M0<2*np.pi) :
             raise NOCaError(f"M0 should be between 0. (included) and 2 pi (excluded), but recieved {M0} instead")
         
+        M = M0 or orbit._E2M(E0) or orbit._E2M(orbit._theta2E(theta0))
+        self._orbits = [(T0, orbit, M)]
+    
+    def __str__(self) :
+        temp = [f"from t={orbit[0]} on M={orbit[2]} :\n{orbit[1]!s}\n"for orbit in self._orbits]
+        return "\n".join(temp)
+    
+    def __repr__(self):
+        temp = [f"T0 : {orbit[0]}, M0 : {orbit[2]}, orbit :\n{orbit[1]}" for orbit in self._orbits]
+        return "\n".join(temp)
+
 class Maneuver :
     """
     A maneuver which can be performed by a spacecraft.
