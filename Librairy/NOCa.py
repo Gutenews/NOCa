@@ -148,6 +148,48 @@ class Orbit :
         self.a=a
         self.eccentricity=eccentricity
         self.omega=omega
+        self._set()
+    
+    def _set(self) :
+        """
+        Internal function to set up a NOCa Orbit
+        """
+        Comega= np.cos(self.omega)
+        Somega= np.sin(self.omega)
+        ClRAN = np.cos(self.lRAN)
+        SlRAN = np.sin(self.lRAN)
+        Ci = np.cos(self.inclination)
+        Si = np.sin(self.inclination)
+        
+        #matrix to get the position in the default referential from the one in the plane of the orbit with x on the Periapsis
+        self._positionMatrix = np.matrix([[Comega*ClRAN-Somega*Ci*SlRAN,-Somega*ClRAN-Comega*Ci*SlRAN,SlRAN*Si],
+                                          [Comega*SlRAN+Comega*Ci*SlRAN,-Somega*SlRAN+Comega*Ci*ClRAN,-ClRAN*Si],
+                                          [Somega*Si                   ,Comega*Si                    ,Ci]])
+    
+    def periapsis(self) :
+        return self.a*(1-self.eccentricity**2)/(1+self.eccentricity)
+    
+    def apoapsis(self) :
+        return self.a*(1-self.eccentricity**2)/(1-self.eccentricity)
+    
+    def __str__(self) :
+        return f"""Periapsis : {self.periapsis()}m, 
+Apoapsis : {self.apoapsis()}m, 
+Argument of the periapsis : {self.omega}, 
+Longitude of the ascendind node : {self.lRAN}, 
+Inclination : {self.inclination}
+Around {self.body}"""
+
+    def __repr__(self) :
+        return f"""
+body : {self.body!r}
+inclination : {self.inclination}
+lRAN : {self.lRAN}
+a : {self.a}
+eccentricity : {self.eccentricity}
+omega : {self.omega}
+_positionMatrix :\n {self._positionMatrix}
+"""
 
 class Spacecraft :
     """
