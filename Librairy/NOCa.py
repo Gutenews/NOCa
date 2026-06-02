@@ -8,10 +8,10 @@ try:
     import numpy as np
 except ImportError as exc:
         msg = f"""
-        Numpy could not be imported but is mandatory for this librairy.
-        Link to the project : https://numpy.org/install/
-        
-        Original error : {exc}
+Numpy could not be imported but is mandatory for NOCa.
+Link to the project : https://numpy.org/install/
+
+Original error : {exc}
         """
         raise ImportError(msg) from exc
         
@@ -19,10 +19,10 @@ try :
     import fast_kepler as fk
 except ImportError as exc :
         msg = f"""
-        fast_kepler could not be imported but is mandatory for this librairy.
-        Link to the project : https://pypi.org/project/fast-kepler/
+fast_kepler could not be imported but is mandatory for NOCa.
+Link to the project : https://pypi.org/project/fast-kepler/
         
-        Original error : {exc}
+Original error : {exc}
         
         """
         raise ImportError(msg) from exc
@@ -76,6 +76,12 @@ class Body :
         self.mu = mu or G*mass
         self.mass=mu/G or mass
         self.radius=radius
+    
+    def __str__(self) :
+        return f"mass : {self.mass}kg, radius : {self.radius}m"
+    
+    def __repr__(self) :
+        return f"mass : {self.mass}, radius {self.radius}"
     
 class Orbit :
     """
