@@ -165,7 +165,10 @@ class Orbit :
         self._positionMatrix = np.matrix([[Comega*ClRAN-Somega*Ci*SlRAN,-Somega*ClRAN-Comega*Ci*SlRAN,SlRAN*Si],
                                           [Comega*SlRAN+Comega*Ci*SlRAN,-Somega*SlRAN+Comega*Ci*ClRAN,-ClRAN*Si],
                                           [Somega*Si                   ,Comega*Si                    ,Ci]])
-    
+        
+        #area constant
+        self._c = np.sqrt((self.body.mu*self.a*(1-self.eccentricity**2)))
+        
     def periapsis(self) :
         """
         return the height of the periapsis
@@ -187,6 +190,80 @@ class Orbit :
             height of the apoapsis.
         """
         return self.a*(1-self.eccentricity**2)/(1-self.eccentricity)
+    
+    def theta2height(self, theta:float):
+        """
+        compute the height at a point of an orbit.
+
+        Parameters
+        ----------
+        theta : float
+            true anomaly, must be between O. (included) and 2pi (excluded).
+
+        Returns
+        -------
+        float
+            height at theta.
+        """
+        if not isinstance(theta, (float, int)) :
+            raise TypeError(f"expecting theta to be a float, recieved {type(theta)} instead")
+        
+        if not (theta>=0. and theta<2*np.pi) :
+            raise NOCaError(f"expecting theta to be between 0. (included) and 2 pi (excluded), but recieved {theta} instead")
+            
+        return self.a*(1-self.eccentricity**2)/(1*self.eccentricity*np.cos(theta))
+    
+    def theta2position(self, theta) :
+        """
+        compute the position a point of the orbit with the true anomaly.
+
+        Parameters
+        ----------
+        theta : float
+            true anomaly, must be between 0. (included) and 2pi (excluded).
+
+        Returns
+        -------
+        numpy ndarray
+            vertical vector of the absolute position of the point in 3D space in cartesian coordinates.
+        """
+        if not isinstance(theta, (float, int)) :
+            raise TypeError(f"expecting theta to be a float, recieved {type(theta)} instead")
+        
+        if not (theta>=0. and theta<2*np.pi) :
+            raise NOCaError(f"expecting theta to be between 0. (included) and 2 pi (excluded), but recieved {theta} instead")
+        
+        Ctheta = np.cos(theta)
+        r= self.a*(1-self.eccentricity**2)/(1+self.eccentricity*Ctheta)
+        er=np.array([[Ctheta],[np.sin(theta)],[0]])
+        return r*(self._positionMatrix@er)
+    
+    def theta2speedVector(self, theta:float) :
+        """
+        comput the speed vector at a point of the orbit with the true anomaly.
+
+        Parameters
+        ----------
+        theta : float
+            true anomaly, mus be between 0. (included) and 2pi (excluded).
+
+        Returns
+        -------
+        numpy ndarray
+            vertical vector of the absolute speed at the point in 3D space in cartesian coordinates.
+        """
+        if not isinstance(theta, (float, int)) :
+            raise TypeError(f"expecting theta to be a float, recieved {type(theta)} instead")
+        
+        if not (theta>=0. and theta<2*np.pi) :
+            raise NOCaError(f"expecting theta to be between 0. (included) and 2 pi (excluded), but recieved {theta} instead")
+        
+        Stheta = np.sin(theta)
+        Ctheta = np.cos(theta)
+        rdot = self._c*self.eccentricity*Stheta/(self.a*(1-self.eccentricity**2))
+        rthetadot = self._c*(1+self.eccentricity*Ctheta)/self.a*(1-self.eccentricity**2)
+        tempspeed = np.array([[Ctheta*rdot-Stheta*rthetadot],[Ctheta*rthetadot+Stheta*rdot],[0.]])
+        return self._positionMatrix@tempspeed
     
     def _theta2E(self, theta:float) :
         """
@@ -305,7 +382,7 @@ class Maneuver :
     ----------
     orbit : Orbit
         The orbit before the maneuver
-    deltaV : np.array
+    deltaV : numpy ndarray
         A vertical vector containing the component of the impulsion vector of the maneuver.
     time : float
         the time at which the maneuver is executed
