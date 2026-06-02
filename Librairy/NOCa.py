@@ -317,7 +317,8 @@ class Maneuver :
         The mean anomaly where the maneuver takes place, at least one of theta, E and M should be specified, between 0. (included) and 2 pi (excluded). The default is 0..
     Returns
     -------
-    None
+    out : NOCa maneuver
+        A maneuver object with the above specifications
     """
     def __init__(self, orbit:Orbit, deltaV:np.array, time:float, theta:float=0., E:float=0., M:float=0.) :
         if not isinstance(orbit, Orbit) :
