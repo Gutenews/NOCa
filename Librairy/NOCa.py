@@ -81,7 +81,7 @@ class Body :
         return f"mass : {self.mass}kg, radius : {self.radius}m"
     
     def __repr__(self) :
-        return f"mass : {self.mass}, radius {self.radius}"
+        return f"mass : {self.mass}, mu : {self.mu}, radius {self.radius}"
     
 class Orbit :
     """
@@ -461,15 +461,28 @@ class Maneuver :
         self.orbit = orbit
         self.time = time
         self.deltaV=deltaV
+        self._set()
     
     def _set(self) :
+        """
+        Internal function to set up a NOCa maneuver
+        """
         Ctheta = np.cos(self.theta)
         Stheta = np.sin(self.theta)
         norm = np.sqrt(self.orbit.eccentricity**2+2*self.orbit.eccentricity*Ctheta+1)
         c = (1+self.orbit.eccentricity*Ctheta)/norm
         s = self.orbit.eccentricity*Stheta/norm
-        temp = np.array([[c*self.deltaV[0,0]]])
-        speed = self.orbit.theta2speedVector(self.theta) + self.orbit._positionMatrix
+        temp = np.array([[ c*self.deltaV[0,0]+s*self.deltaV[1,0]],
+                         [-c*self.deltaV[1,0]+s*self.deltaV[0,0]],
+                         [self.deltaV[2,0]]])
+        speed = self.orbit.theta2speedVector(self.theta) + self.orbit._positionMatrix @ (np.array([[Ctheta,-Stheta,0.],[Stheta,Ctheta,0.],[0.,0.,1.]])@temp)
+        self.postorbit, self.posttheta = PosSpeed2orbit(self.body, self.orbit.theta2position(self.theta), speed)
+    
+    def __str__(self) :
+        return f"on t={self.time} on theta={self.theta} on a orbit with \n{self.orbit!s}, with an impulse of {self.deltaV} to get on\n{self.postorbit!s}\n with theta={self.posttheta}"
+    
+    def __repr__(self) :
+        return f"theta:{self.theta}, posttheta:{self.posttheta}, time:{self.time}, deltaV:\n{self.deltaV}\n orbit:\n{self.orbit!r}\npostorbit:\n{self.postorbit!r}"
 
 def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
     """
@@ -522,6 +535,3 @@ def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
         Cos = (r*speed[2,0]-(np.dot(speed.T,position)).item()*position[2,0]/r)/(c*np.sin(inclination))
         omega = np.atan2(Sin,Cos)-theta
     return Orbit(body, inclination, lRAN, a, eccentricity, omega), theta
-
-a = np.array([[0.],[1.],[2.]])
-print(a[1,0])
