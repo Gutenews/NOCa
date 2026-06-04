@@ -4,6 +4,8 @@ Newtonian Orbital Calculator
 A library to compute trajectories and maneuvers for spacecraft orbiting one body
 """
 
+from bisect import bisect_right
+
 try:
     import numpy as np
 except ImportError as exc:
@@ -169,6 +171,8 @@ class Orbit :
         #area constant
         self._c = np.sqrt((self.body.mu*self.a*(1-self.eccentricity**2)))
         
+        self.T = np.sqrt((self.a**3)/self.body.mu)
+        
     def periapsis(self) :
         """
         return the height of the periapsis
@@ -329,9 +333,21 @@ class Orbit :
         """
         return fk.kepler_array(M, self.eccentricity)
     
+    def copy(self) :
+        """
+        copy the orbit but NOT THE BODY
+
+        Returns
+        -------
+        NOCa Orbit
+            copy of the orbit.
+        """
+        return Orbit(self.body, self.inclination, self.lRAN, self.a, self.eccentricity, self.omega)
+    
     def __str__(self) :
         return f"""Periapsis : {self.periapsis()}m, 
-Apoapsis : {self.apoapsis()}m, 
+Apoapsis : {self.apoapsis()}m,
+Period : {self.T},
 Argument of the periapsis : {self.omega}, 
 Longitude of the ascendind node : {self.lRAN}, 
 Inclination : {self.inclination}
@@ -396,14 +412,111 @@ class Spacecraft :
             raise NOCaError(f"M0 should be between 0. (included) and 2 pi (excluded), but recieved {M0} instead")
         
         M = M0 or orbit._E2M(E0) or orbit._E2M(orbit._theta2E(theta0))
-        self._orbits = [(T0, orbit, M)]
+        self._orbits = [(orbit, M)]
+        self._time = [T0]
     
+    def time2position(self, time:float) :
+        """
+        Compute the position of the spacecraft at one point in time.
+
+        Parameters
+        ----------
+        time : float
+            time to compute the position of the spacecraft, must be later than its creation.
+
+        Returns
+        -------
+        numpy ndarray
+            vertical vector of the absolute position of the spacecraft in 3D space in cartesian coordinates.
+        """
+        if not isinstance(time, (float, int)) :
+            raise TypeError(f"expecting time to be a float, recieved {type(time)} instead")
+        
+        if time<self._time[0] :
+            raise NOCaError(f"time={time} but spacecraft didn't exist until {self._time[0]}")
+        
+        i = bisect_right(self._time, time)-1
+        orbit, M0 = self._orbits[i]
+        dt = (time-self._time[i])%orbit.T
+        M = (M0+2*np.pi*dt/self.T)%(2*np.pi)
+        return orbit.theta2position(orbit._E2theta(orbit._M2E(M)))
+    
+    def time2speedVector(self, time:float) :
+        """
+        Compute the speed vector of the spacecraft at one point in time.
+
+        Parameters
+        ----------
+        time : float
+            time to compute the position of the spacecraft, must be later than its creation.
+
+        Returns
+        -------
+        numpy ndarray
+            vertical vector of the absolute speed at the point in 3D space in cartesian coordinates.
+        """
+        if not isinstance(time, (float, int)) :
+            raise TypeError(f"expecting time to be a float, recieved {type(time)} instead")
+        
+        if time<self._time[0] :
+            raise NOCaError(f"time={time} but spacecraft didn't exist until {self._time[0]}")
+        
+        i = bisect_right(self._time, time)-1
+        orbit, M0 = self._orbits[i]
+        dt = (time-self._time[i])%orbit.T
+        M = (M0+2*np.pi*dt/self.T)%(2*np.pi)
+        return orbit.theta2speedVector()(orbit._E2theta(orbit._M2E(M)))
+
+    def addManeuver(self, deltaV:np.ndarray, time:float, add:bool=True) :
+        """
+        SUMMARY.
+
+        Parameters
+        ----------
+        deltaV : numpy ndarray
+            A vertical vector containing the components of the impulsion vector of the maneuver.
+        time : float
+            the time at which the maneuver is executed
+        add : bool, optional
+            If the spacecraft should perform the maneuver. The default is True.
+
+        Returns
+        -------
+        NOCa Maneuver
+            the maneuver computed, note : editing this maneuver will not affect the spacecraft.
+        """
+        if not isinstance(time, (float, int)) :
+            raise TypeError(f"expecting time to be a float, recieved {type(time)} instead")
+        
+        if time<self._time[0] :
+            raise NOCaError(f"time={time} but spacecraft didn't exist until {self._time[0]}")
+        
+        if not isinstance(deltaV, np.ndarray) :
+            raise TypeError(f"expecting deltaV to be a numpy ndarray, recieved {type(deltaV)} instead")
+        
+        if not deltaV.shape == (3,1) :
+            raise NOCaError(f"expecting deltaV to be of shape (3,1), recieved {deltaV.shape}")
+        
+        if not isinstance(add, bool) :
+            raise TypeError(f"expecting add to be bool, recieved {type(add)} instead")
+        
+        i = bisect_right(self._time, time)-1
+        orbit, M0 = self._orbits[i]
+        dt = (time-self._time[i])%orbit.T
+        M = (M0+2*np.pi*dt/self.T)%(2*np.pi)
+        maneuver = Maneuver(orbit, deltaV, time,M=M)
+        if add :
+            self._time.append(time)
+            postM0 = maneuver.postorbit._E2M(maneuver.postorbit._theta2E(maneuver.posttheta))
+            self._orbits.append((maneuver.postorbit.copy(),postM0))
+        return maneuver
+
     def __str__(self) :
-        temp = [f"from t={orbit[0]} on M={orbit[2]} :\n{orbit[1]!s}\n"for orbit in self._orbits]
+        temp = [f"from t={self._time[i]} on M={self._orbits[i][1]} :\n{self._orbit[i][0]!s}\n"for i in range(len(self._time))]
         return "\n".join(temp)
     
     def __repr__(self):
-        temp = [f"T0 : {orbit[0]}, M0 : {orbit[2]}, orbit :\n{orbit[1]}" for orbit in self._orbits]
+        temp = [f"T0 : {self._time[i]}, M0 : {self._orbits[i][1]}, orbit :\n{self._orbits[i][0]}" for i in range(self._time)]
         return "\n".join(temp)
 
 class Maneuver :
@@ -435,6 +548,9 @@ class Maneuver :
         
         if not isinstance(deltaV, np.ndarray) :
             raise TypeError(f"expecting deltaV to be a numpy ndarray, recieved {type(deltaV)} instead")
+        
+        if not deltaV.shape == (3,1) :
+            raise NOCaError(f"expecting deltaV to be of shape (3,1), recieved {deltaV.shape}")
         
         if not isinstance(theta, (float, int)) :
             raise TypeError(f"expecting theta0 to be a float, recieved {type(theta)} instead")
@@ -478,6 +594,17 @@ class Maneuver :
         speed = self.orbit.theta2speedVector(self.theta) + self.orbit._positionMatrix @ (np.array([[Ctheta,-Stheta,0.],[Stheta,Ctheta,0.],[0.,0.,1.]])@temp)
         self.postorbit, self.posttheta = PosSpeed2orbit(self.body, self.orbit.theta2position(self.theta), speed)
     
+    def copy(self) :
+        """
+        copy the maneuver and its base and result orbit, NOT THE BODY
+
+        Returns
+        -------
+        NOCa Maneuver
+            a copy of the maneuver.
+        """
+        return Maneuver(self.orbit.copy(), self.deltaV.copy(), self.time)
+    
     def __str__(self) :
         return f"on t={self.time} on theta={self.theta} on a orbit with \n{self.orbit!s}, with an impulse of {self.deltaV} to get on\n{self.postorbit!s}\n with theta={self.posttheta}"
     
@@ -514,10 +641,10 @@ def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
         raise TypeError(f"expectind speed to be a numpy ndarray, recieved {type(speed)} instead")
     
     if not position.shape == (3,1) :
-        raise NOCaError(f"expecting a vertical vector for position, but recieved {position}")
+        raise NOCaError(f"expecting deltaV to be of shape (3,1), recieved {position.shape}")
     
     if not speed.shape == (3,1) :
-        raise NOCaError(f"expecting a vertical vector for position, but recieved {speed}")
+        raise NOCaError(f"expecting deltaV to be of shape (3,1), recieved {speed.shape}")
     
     #to understand what's going on look at Computing orbital elements section of the NOCa computation
     C = np.linalg.cross(position, speed, axis=0)
@@ -528,7 +655,7 @@ def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
     a = -body.mu/(np.linalg.norm(speed)+2*body.mu/r)
     eccentricity = np.sqrt(1-c**2/(body.mu*a))
     theta = np.atan2(a*(1-eccentricity**2)*speed[0,0]/c,a*(1-eccentricity**2)/r-1)
-    if inclination == 0. :
+    if inclination == 0. : #dodging a division by 0
         omega = 0.
     else : 
         Sin = position[2,0]/(r*np.sin(inclination))
