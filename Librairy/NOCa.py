@@ -78,6 +78,17 @@ class Body :
         self.mu = mu or G*mass
         self.mass=mu/G or mass
         self.radius=radius
+        
+    def copy(self) :
+        """
+        returns a copy of the body
+
+        Returns
+        -------
+        NOCa Body
+            copy of the body.
+        """
+        return Body(self.radius,self.mass,self.mu)
     
     def __str__(self) :
         return f"mass : {self.mass}kg, radius : {self.radius}m"
@@ -510,6 +521,20 @@ class Spacecraft :
             postM0 = maneuver.postorbit._E2M(maneuver.postorbit._theta2E(maneuver.posttheta))
             self._orbits.append((maneuver.postorbit.copy(),postM0))
         return maneuver
+    
+    def copy(self) :
+        """
+        return a copy of the spacecraft, the orbits are copy but NOT THE BODY.
+
+        Returns
+        -------
+        NOCa Spacecraft
+            copy of the spacecraft.
+        """
+        temp = Spacecraft(self._orbits[0][0],M0=self._orbits[0][0])
+        temp._time=self._time.copy()
+        temp._orbits=[(orbit.copy(),M) for (orbit,M) in self._orbits]
+        return temp
 
     def __str__(self) :
         temp = [f"from t={self._time[i]} on M={self._orbits[i][1]} :\n{self._orbit[i][0]!s}\n"for i in range(len(self._time))]
