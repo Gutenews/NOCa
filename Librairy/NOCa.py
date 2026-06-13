@@ -175,14 +175,14 @@ class Orbit :
         Si = np.sin(self.inclination)
         
         #matrix to get the position in the default referential from the one in the plane of the orbit with x on the Periapsis
-        self._positionMatrix = np.matrix([[Comega*ClRAN-Somega*Ci*SlRAN,-Somega*ClRAN-Comega*Ci*SlRAN,SlRAN*Si],
-                                          [Comega*SlRAN+Comega*Ci*SlRAN,-Somega*SlRAN+Comega*Ci*ClRAN,-ClRAN*Si],
+        self._positionMatrix = np.array([[Comega*ClRAN-Somega*Ci*SlRAN,-Somega*ClRAN-Comega*Ci*SlRAN,SlRAN*Si],
+                                          [Comega*SlRAN+Somega*Ci*ClRAN,-Somega*SlRAN+Comega*Ci*ClRAN,-ClRAN*Si],
                                           [Somega*Si                   ,Comega*Si                    ,Ci]])
         
         #area constant
         self._c = np.sqrt((self.body.mu*self.a*(1-self.eccentricity**2)))
         
-        self.T = np.sqrt((self.a**3)/self.body.mu)
+        self.T = 2*np.pi*np.sqrt((self.a**3)/self.body.mu)
         
     def periapsis(self) :
         """
@@ -226,7 +226,7 @@ class Orbit :
         if not (theta>=0. and theta<2*np.pi) :
             raise NOCaError(f"expecting theta to be between 0. (included) and 2 pi (excluded), but recieved {theta} instead")
             
-        return self.a*(1-self.eccentricity**2)/(1*self.eccentricity*np.cos(theta))
+        return self.a*(1-self.eccentricity**2)/(1+self.eccentricity*np.cos(theta))
     
     def theta2position(self, theta) :
         """
@@ -276,7 +276,7 @@ class Orbit :
         Stheta = np.sin(theta)
         Ctheta = np.cos(theta)
         rdot = self._c*self.eccentricity*Stheta/(self.a*(1-self.eccentricity**2))
-        rthetadot = self._c*(1+self.eccentricity*Ctheta)/self.a*(1-self.eccentricity**2)
+        rthetadot = self._c*(1+self.eccentricity*Ctheta)/(self.a*(1-self.eccentricity**2))
         tempspeed = np.array([[Ctheta*rdot-Stheta*rthetadot],[Ctheta*rthetadot+Stheta*rdot],[0.]])
         return self._positionMatrix@tempspeed
     
@@ -294,7 +294,7 @@ class Orbit :
         float
             eccentric anomaly.
         """
-        return 2*np.atan(np.sqrt((1-self.eccentricity)/(1+self.eccentricity))*np.tan(theta/2))
+        return 2*(np.atan(np.sqrt((1-self.eccentricity)/(1+self.eccentricity))*np.tan(theta/2))%np.pi)
     
     def _E2M(self, E:float) :
         """
@@ -326,7 +326,7 @@ class Orbit :
         float
             true anomaly.
         """
-        return 2*np.atan(np.sqrt((1+self.eccentricity)/(1-self.eccentricity))*np.tan(2*E))
+        return 2*((np.atan(np.sqrt((1+self.eccentricity)/(1-self.eccentricity))*np.tan(E/2))%np.pi)%np.pi)
     
     def _M2E(self, M:float) :
         """
@@ -342,7 +342,7 @@ class Orbit :
         float
             eccentric anomaly.
         """
-        return fk.kepler_array(M, self.eccentricity)
+        return ((fk.kepler_array(np.array([M]), self.eccentricity)).item()%(2*np.pi))
     
     def copy(self) :
         """
@@ -358,11 +358,12 @@ class Orbit :
     def __str__(self) :
         return f"""Periapsis : {self.periapsis()}m, 
 Apoapsis : {self.apoapsis()}m,
-Period : {self.T},
+Period : {self.T} s,
 Argument of the periapsis : {self.omega}, 
-Longitude of the ascendind node : {self.lRAN}, 
+Longitude of the ascending node : {self.lRAN}, 
 Inclination : {self.inclination}
-Around {self.body}"""
+Around {self.body}
+"""
 
     def __repr__(self) :
         return f"""
@@ -373,6 +374,8 @@ a : {self.a}
 eccentricity : {self.eccentricity}
 omega : {self.omega}
 _positionMatrix :\n {self._positionMatrix}
+T : {self.T}
+_c : {self._c}
 """
 
 class Spacecraft :
@@ -449,7 +452,7 @@ class Spacecraft :
         i = bisect_right(self._time, time)-1
         orbit, M0 = self._orbits[i]
         dt = (time-self._time[i])%orbit.T
-        M = (M0+2*np.pi*dt/self.T)%(2*np.pi)
+        M = (M0+2*np.pi*dt/orbit.T)%(2*np.pi)
         return orbit.theta2position(orbit._E2theta(orbit._M2E(M)))
     
     def time2speedVector(self, time:float) :
@@ -475,12 +478,12 @@ class Spacecraft :
         i = bisect_right(self._time, time)-1
         orbit, M0 = self._orbits[i]
         dt = (time-self._time[i])%orbit.T
-        M = (M0+2*np.pi*dt/self.T)%(2*np.pi)
-        return orbit.theta2speedVector()(orbit._E2theta(orbit._M2E(M)))
+        M = (M0+2*np.pi*dt/orbit.T)%(2*np.pi)
+        return orbit.theta2speedVector(orbit._E2theta(orbit._M2E(M)))
 
     def addManeuver(self, deltaV:np.ndarray, time:float, add:bool=True) :
         """
-        SUMMARY.
+        Compute a maneuver on the spacecraft on the time specified.
 
         Parameters
         ----------
@@ -512,9 +515,11 @@ class Spacecraft :
             raise TypeError(f"expecting add to be bool, recieved {type(add)} instead")
         
         i = bisect_right(self._time, time)-1
+        if add and i<len(self._orbits)-1:
+            raise NOCaError("the maneuver is to be computed before the last maneuver of the spacecraft, so both can't be taken into account")
         orbit, M0 = self._orbits[i]
         dt = (time-self._time[i])%orbit.T
-        M = (M0+2*np.pi*dt/self.T)%(2*np.pi)
+        M = (M0+2*np.pi*dt/orbit.T)%(2*np.pi)
         maneuver = Maneuver(orbit, deltaV, time,M=M)
         if add :
             self._time.append(time)
@@ -531,17 +536,17 @@ class Spacecraft :
         NOCa Spacecraft
             copy of the spacecraft.
         """
-        temp = Spacecraft(self._orbits[0][0],M0=self._orbits[0][0])
+        temp = Spacecraft(self._orbits[0][0],M0=self._orbits[0][1])
         temp._time=self._time.copy()
         temp._orbits=[(orbit.copy(),M) for (orbit,M) in self._orbits]
         return temp
 
     def __str__(self) :
-        temp = [f"from t={self._time[i]} on M={self._orbits[i][1]} :\n{self._orbit[i][0]!s}\n"for i in range(len(self._time))]
+        temp = [f"from t={self._time[i]} on M={self._orbits[i][1]} :\n{self._orbits[i][0]!s}\n"for i in range(len(self._time))]
         return "\n".join(temp)
     
     def __repr__(self):
-        temp = [f"T0 : {self._time[i]}, M0 : {self._orbits[i][1]}, orbit :\n{self._orbits[i][0]}" for i in range(self._time)]
+        temp = [f"T{i} : {self._time[i]}, M{i} : {self._orbits[i][1]}, orbit :\n{self._orbits[i][0]!r}" for i in range(len(self._time))]
         return "\n".join(temp)
 
 class Maneuver :
@@ -598,7 +603,7 @@ class Maneuver :
         if not (M>=0. and M<2*np.pi) :
             raise NOCaError(f"M0 should be between 0. (included) and 2 pi (excluded), but recieved {M} instead")
         
-        self.theta = theta or self.orbit._E2M(E) or self.orbit._E2M(self.orbit._M2E(M))
+        self.theta = theta or orbit._E2M(E) or orbit._E2theta(orbit._M2E(M))
         self.orbit = orbit
         self.time = time
         self.deltaV=deltaV
@@ -613,11 +618,11 @@ class Maneuver :
         norm = np.sqrt(self.orbit.eccentricity**2+2*self.orbit.eccentricity*Ctheta+1)
         c = (1+self.orbit.eccentricity*Ctheta)/norm
         s = self.orbit.eccentricity*Stheta/norm
-        temp = np.array([[ c*self.deltaV[0,0]+s*self.deltaV[1,0]],
-                         [-c*self.deltaV[1,0]+s*self.deltaV[0,0]],
-                         [self.deltaV[2,0]]])
+        temp = np.array([[s*self.deltaV[0,0]+c*self.deltaV[2,0]],
+                         [c*self.deltaV[0,0]-s*self.deltaV[2,0]],
+                         [self.deltaV[1,0]]])
         speed = self.orbit.theta2speedVector(self.theta) + self.orbit._positionMatrix @ (np.array([[Ctheta,-Stheta,0.],[Stheta,Ctheta,0.],[0.,0.,1.]])@temp)
-        self.postorbit, self.posttheta = PosSpeed2orbit(self.body, self.orbit.theta2position(self.theta), speed)
+        self.postorbit, self.posttheta = PosSpeed2orbit(self.orbit.body, self.orbit.theta2position(self.theta), speed)
     
     def copy(self) :
         """
@@ -631,10 +636,10 @@ class Maneuver :
         return Maneuver(self.orbit.copy(), self.deltaV.copy(), self.time)
     
     def __str__(self) :
-        return f"on t={self.time} on theta={self.theta} on a orbit with \n{self.orbit!s}, with an impulse of {self.deltaV} to get on\n{self.postorbit!s}\n with theta={self.posttheta}"
+        return f"on t={self.time} on theta={self.theta} on a orbit with \n{self.orbit!s}With an impulse of \n{self.deltaV}\nTo get on\n{self.postorbit!s}with theta : {self.posttheta}"
     
     def __repr__(self) :
-        return f"theta:{self.theta}, posttheta:{self.posttheta}, time:{self.time}, deltaV:\n{self.deltaV}\n orbit:\n{self.orbit!r}\npostorbit:\n{self.postorbit!r}"
+        return f"theta:{self.theta}, posttheta:{self.posttheta}, time:{self.time}, deltaV:\n{self.deltaV}\norbit:\n{self.orbit!r}\npostorbit:\n{self.postorbit!r}"
 
 def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
     """
@@ -673,17 +678,18 @@ def PosSpeed2orbit(body:Body, position:np.ndarray, speed:np.ndarray) :
     
     #to understand what's going on look at Computing orbital elements section of the NOCa computation
     C = np.linalg.cross(position, speed, axis=0)
-    lRAN = np.pi/2+np.atan2(C[1,0],C[0,0])
-    inclination = np.arccos(C[2,0]/C)
     c = np.linalg.norm(C)
+    inclination = np.arccos(C[2,0]/c)
     r = np.linalg.norm(position)
-    a = -body.mu/(np.linalg.norm(speed)+2*body.mu/r)
+    a = -body.mu/(np.linalg.norm(speed)**2-2*body.mu/r)
     eccentricity = np.sqrt(1-c**2/(body.mu*a))
     theta = np.atan2(a*(1-eccentricity**2)*speed[0,0]/c,a*(1-eccentricity**2)/r-1)
     if inclination == 0. : #dodging a division by 0
         omega = 0.
+        lRAN = np.atan2(position[1,0],position[0,0]) - theta #to have the periapsis and the ascending node in the same place
     else : 
+        lRAN = np.pi/2+np.atan2(C[1,0],C[0,0])
         Sin = position[2,0]/(r*np.sin(inclination))
         Cos = (r*speed[2,0]-(np.dot(speed.T,position)).item()*position[2,0]/r)/(c*np.sin(inclination))
         omega = np.atan2(Sin,Cos)-theta
-    return Orbit(body, inclination, lRAN, a, eccentricity, omega), theta
+    return Orbit(body, inclination, lRAN%(2*np.pi), a, eccentricity, omega%(2*np.pi)), theta%(2*np.pi)
